@@ -1,3 +1,5 @@
+## lib
+
 ```
 lib/
 ```
@@ -24,11 +26,15 @@ common code from someone else
 
 ###### Note that js files in lib folders are loaded before other js files.
 
+## models
+
 ```
 models/
 ```
 definitions of collections and methods on them (could be models/)
 
+
+## client
 
 ```
 client/lib                 
@@ -90,6 +96,8 @@ client/stylesheets/
 css / styl / less files
 
 
+## server
+
 ```
 server/publications.js     
 ```
@@ -102,12 +110,15 @@ server/lib/environment.js
 configuration of server side packages
 
 
+## public
+
 ```
 public/
 ```
 static files, such as images, that are served directly.
 
 
+## tests
 ```
 tests/
 ```
