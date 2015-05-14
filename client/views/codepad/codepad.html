@@ -1,0 +1,21 @@
+<template name="codepad">
+
+	<h1><a id="codebase-a" href="./">CodePad</a></h1>
+
+	{{#with docid}}
+		{{> sharejsAce docid=docid onRender=config id='editor'}}
+	{{/with}}
+
+</template>
+
+<template name="codepadBase">
+
+<div id="base_container" class="div-center center-text">
+
+	<h1>CodePad</h1>
+
+	<a href="/codepad/{{randDocid}}" class="btn btn-default">New CodePad</a>
+
+</div>
+
+</template>

@@ -1,0 +1,72 @@
+<head>
+	<title>Dan Appel</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+</body>
+
+<template name="loading">
+	<h3 class="text-center">Loading...</h3>
+</template>
+
+<template name="notFound">
+	<h1 class="text-center">Page doesn't exit</h1>
+	<h3 class="text-center">404 Not Found</h3>
+</template>
+
+<template name="header">
+
+	<nav class="navbar navbar-default center">
+		<div class="container-fluid">
+			<ul class="nav navbar-nav">
+				<li class="navigation-list-item nav"><a href="{{pathFor 'home'}}">Home</a></li>
+				<li class="navigation-list-item nav"><a href="{{pathFor 'resume'}}">Projects</a></li>
+				<li class="navigation-list-item nav"><a href="{{pathFor 'about'}}">About</a></li>
+				<li class="navigation-list-item nav"><a href="{{pathFor 'contact'}}">Contact Me</a></li>
+				<li class="navigation-list-item nav"><a href="{{ blogUrl }}">Blog</a></li>
+				<li class="navigation-list-item nav">{{> loginButtons }}</li>
+			</ul>
+		</div>
+
+	</nav>
+
+</template>
+
+<template name="footer">
+
+	<footer>
+		<nav class="navbar navbar-default center footer-container">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li class="navigation-list-item nav"><a href="{{pathFor 'home'}}">Home</a></li>
+					<li class="navigation-list-item nav"><a href="{{pathFor 'resume'}}">Projects</a></li>
+					<li class="navigation-list-item nav"><a href="{{pathFor 'about'}}">About</a></li>
+				<li class="navigation-list-item nav"><a href="{{pathFor 'contact'}}">Contact Me</a></li>
+					<li class="navigation-list-item nav"><a href="{{ blogUrl }}">Blog</a></li>
+				</ul>
+			</div>
+		</nav>
+	</footer>
+
+</template>
+
+
+<template name="layout">
+
+	{{>header }}
+
+		<div id="main-content-container">
+
+			{{> yield }}
+
+		</div>
+
+	{{> footer }}
+
+</template>
+
+<template name="adminTemplate">
+	{{> accountsAdmin}}
+</template>
