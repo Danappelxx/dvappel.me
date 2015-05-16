@@ -26,6 +26,12 @@
 				<li class="navigation-list-item nav"><a href="{{pathFor 'about'}}">About</a></li>
 				<li class="navigation-list-item nav"><a href="{{pathFor 'contact'}}">Contact Me</a></li>
 				<li class="navigation-list-item nav"><a href="{{ blogUrl }}">Blog</a></li>
+				{{#if isAdmin}}
+					<li class="navigation-list-item nav"><a href="/admin">Admin</a></li>
+				{{/if}}
+				{{#if canEditBlog}}
+					<li class="navigation-list-item nav"><a href="/admin/blog">Blog Admin</a></li>
+				{{/if}}
 				<li class="navigation-list-item nav">{{> loginButtons }}</li>
 			</ul>
 		</div>
@@ -68,5 +74,7 @@
 </template>
 
 <template name="adminTemplate">
+
 	{{> accountsAdmin }}
+
 </template>

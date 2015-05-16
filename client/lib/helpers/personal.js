@@ -3,21 +3,36 @@
 Template.adminTemplate.helpers({
 	isAdminUser: function() {
 		return Roles.userIsInRole(Meteor.user(), ['admin']);
-	}
+	},
+	canEditBlog: function () {
+		return Roles.userIsInRole(Meteor.user(), ['blogAuthor']);
+	}	
 });
 
 Template.header.helpers({
-	blogUrl: '/blog'
+	blogUrl: '/blog',
+	isAdmin: function () {
+		return Roles.userIsInRole(Meteor.user(), ['admin']);
+	},
+	canEditBlog: function () {
+		return Roles.userIsInRole(Meteor.user(), ['blogAuthor']);
+	}	
 });
 
 Template.footer.helpers({
-	blogUrl: '/blog'
+	blogUrl: '/blog',
+	isAdmin: function () {
+		return Roles.userIsInRole(Meteor.user(), ['admin']);
+	},
+	canEditBlog: function () {
+		return Roles.userIsInRole(Meteor.user(), ['blogAuthor']);
+	}	
 });
 
 Template.codepad.helpers({
         config: function () {
                 return function (editor) {
-                        editor.setTheme('ace/theme/github');
+                        editor.setTheme('ace/theme/monokai');
                         editor.getSession().setMode('ace/mode/javascript');
                         editor.setShowPrintMargin(false);
                         editor.getSession().setUseWrapMode(true);
@@ -27,4 +42,3 @@ Template.codepad.helpers({
                 return Session.get('padid');
         }
 });
-

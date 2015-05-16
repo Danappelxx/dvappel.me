@@ -2,22 +2,24 @@
 	#editor {
 		width: 100%;
 		height: 500px;
+		margin-bottom: 10px;
 	}
 }
 
-@media (max-height: 1200px) {
+@media (max-height: 1000px) {
 	#editor {
 		width: 100%;
 		height: 600px;
+		margin-bottom: 15px;
 	}
 }
-@media (min-height: 1201px) {
+@media (min-height: 1000px) {
 	#editor {
 		width: 100%;
-		height: 1000px;
+		height: 800px;
+		margin-bottom: 25px;
 	}
 }
-
 #base_container {
 	width: 30%;
 	padding-bottom: 10px;
