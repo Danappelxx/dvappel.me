@@ -42,6 +42,7 @@ deps@1.0.7
 ejson@1.0.6
 email@1.0.6
 fastclick@1.0.3
+gadicohen:phantomjs@0.0.2
 geojson-utils@1.0.3
 gfk:notifications@1.0.11
 github@1.1.3
