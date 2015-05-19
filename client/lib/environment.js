@@ -21,7 +21,8 @@ Blog.config({
 Router.configure({
 	loadingTemplate: 'loading',
 	notFoundTemplate: 'notFound',
-	layoutTemplate: 'layout'
+	layoutTemplate: 'layout',
+	fastRender: true
 });
 
 Router.map(function () {
