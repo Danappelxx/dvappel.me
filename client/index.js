@@ -1,6 +1,7 @@
 // toplevel html's JS
 
-// EGGSAMPLE
+// Easter egg
+
 var egg = new Egg();
 
 egg
