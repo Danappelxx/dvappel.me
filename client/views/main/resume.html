@@ -1,0 +1,44 @@
+<template name="resume">
+	<section>
+		<h1>Projects</h1>
+		{{> resumeProjectList}}
+		<p class="footnote">*Built at a hackathon</p>
+	</section>
+	<section>
+		<h1>Achievements</h1>
+		{{> resumeAchievementList }}
+	</section>
+</template>
+
+<template name="resumeProjectList">
+
+	<ul>
+	    <li><strong><a href="https://github.com/Danappelxx/Pebble-Flip">An instagram client for the Pebble</a></strong></li>
+	    <li><strong><a href="https://github.com/Danappelxx/RSS-News-Spreeder">A RSS 'spreeder' for the Pebble</a></strong></li>
+	    <li><strong><a href="http://danappelxx.github.io">An event-based photo-sharing platform*</a></strong></li>
+	    <li><strong><a href="/">This website</a></strong></li>
+	    <li><strong><a href="/codepad">A codr.io clone</a></strong></li>
+	    <li><strong><a href="https://atmospherejs.com/danappelxx/eggjs">A Meteor.js package wrapper for egg.js (Press: up up down down left right left right b a)</a></strong></li>
+	</ul>
+
+</template>
+
+
+<template name="resumeAchievementList">
+
+	<ul>
+	    <li>Won the 'Best First Time Hack' at <a href="http://hshacks2.challengepost.com">HSHacksII</a> with <a href="http://danappelxx.github.io">Advent</a></li>
+	    <li>Won 4th place at <a href="http://teenhackathon.com">Teenhackathon</a> with <a href="https://github.com/Danappelxx/Runners-Beat">Runner's Beat</a></li>
+	    <li>Earned the title 'Full-stack Developer'</li>
+	    <li>Knowledgable in:
+	    	<ul>
+	    	    <li>Python</li>
+	    	    <li>Django</li>
+	    	    <li>Javascript</li>
+	    	    <li>Meteor.js</li>
+	    	    <li>nginx</li>
+	    	</ul>
+	    </li>
+	</ul>
+
+</template>
