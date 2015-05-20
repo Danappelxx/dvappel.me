@@ -1,16 +1,21 @@
-<template name="resume">
-	<section>
-		<h1>Projects</h1>
-		{{> resumeProjectList}}
-		<p class="footnote">*Built at a hackathon</p>
-	</section>
-	<section>
-		<h1>Achievements</h1>
-		{{> resumeAchievementList }}
-	</section>
+<template name="projects">
+	<article>
+
+		<section>
+			<h1>Projects</h1>
+			{{> projectsProjectList}}
+			<p class="footnote">*Built at a hackathon</p>
+		</section>
+
+		<section>
+			<h1>Achievements</h1>
+			{{> projectsAchievementList }}
+		</section>
+
+	</article>
 </template>
 
-<template name="resumeProjectList">
+<template name="projectsProjectList">
 
 	<ul>
 	    <li><strong><a href="https://github.com/Danappelxx/Pebble-Flip">An instagram client for the Pebble</a></strong></li>
@@ -24,7 +29,7 @@
 </template>
 
 
-<template name="resumeAchievementList">
+<template name="projectsAchievementList">
 
 	<ul>
 	    <li>Won the 'Best First Time Hack' at <a href="http://hshacks2.challengepost.com">HSHacksII</a> with <a href="http://danappelxx.github.io">Advent</a></li>

@@ -6,17 +6,17 @@ Template.adminTemplate.helpers({
 	},
 	canEditBlog: function () {
 		return Roles.userIsInRole(Meteor.user(), ['blogAuthor']);
-	}	
+	}
 });
 
-Template.header.helpers({
+Template.navbar.helpers({
 	blogUrl: '/blog',
 	isAdmin: function () {
 		return Roles.userIsInRole(Meteor.user(), ['admin']);
 	},
 	canEditBlog: function () {
 		return Roles.userIsInRole(Meteor.user(), ['blogAuthor']);
-	}	
+	}
 });
 
 Template.footer.helpers({
@@ -26,7 +26,7 @@ Template.footer.helpers({
 	},
 	canEditBlog: function () {
 		return Roles.userIsInRole(Meteor.user(), ['blogAuthor']);
-	}	
+	}
 });
 
 Template.codepad.helpers({
