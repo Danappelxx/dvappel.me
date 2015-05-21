@@ -7,19 +7,13 @@ any common code for client/server.
 
 
 ```
-lib/environment.js         
+lib/environment.js
 ```
 general configuration
 
 
 ```
-lib/methods.js
-```
-Meteor.method definitions
-
-
-```
-lib/external               
+lib/external
 ```
 common code from someone else
 
@@ -37,7 +31,7 @@ definitions of collections and methods on them (could be models/)
 ## client
 
 ```
-client/lib                 
+client/lib
 ```
 client specific libraries (also loaded first)
 
@@ -67,13 +61,13 @@ toplevel html
 
 
 ```
-client/index.js            
+client/index.js
 ```
 and its JS
 
 
 ```
-client/views/<page>.html   
+client/views/<page>.html
 ```
 the templates specific to a single page
 
@@ -85,13 +79,13 @@ and the JS to hook it up
 
 
 ```
-client/views/<type>/       
+client/views/<type>/
 ```
 if you find you have a lot of views of the same object type
 
 
 ```
-client/stylesheets/        
+client/stylesheets/
 ```
 css / styl / less files
 
@@ -99,10 +93,14 @@ css / styl / less files
 ## server
 
 ```
-server/publications.js     
+server/publications.js
 ```
 Meteor.publish definitions
 
+```
+server/methods.js
+```
+Meteor.method definitions
 
 ```
 server/lib/environment.js

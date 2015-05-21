@@ -1,0 +1,21 @@
+<template name="gitlinecount">
+
+	<div id="gitlinecount-container" class="input-group">
+
+		<h1>Github Line Counter</h1>
+		<h2>Enter your repository information...</h2>
+
+		<input type="text" placeholder="Repository Owner" id="repo-owner-input" class="form-control">
+		<input type="text" placeholder="Repository Name" id="repo-name-input" class="form-control">
+
+		<div id="gitlinecount-button-container">
+			<button class="btn btn-default">Count</button>
+		</div>
+
+		<div id="">
+			<p>Count: {{ currLineCount }}</p>
+		</div>
+	</div>
+
+
+</template>

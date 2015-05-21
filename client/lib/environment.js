@@ -77,4 +77,10 @@ Router.map(function () {
 			this.next();
 		}
 	});
+
+	this.route('gitlinecounter', {
+		path: '/gitlinecounter',
+		template: 'gitlinecount'
+	});
 });
+
