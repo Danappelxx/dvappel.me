@@ -6,15 +6,25 @@
 		<h2>Enter your repository information...</h2>
 
 		<input type="text" placeholder="Repository Owner" id="repo-owner-input" class="form-control">
-		<input type="text" placeholder="Repository Name" id="repo-name-input" class="form-control">
+		<input type="text" placeholder="Repository Name" id="repo-name-input" class="form-control" title="You can leave this blank to get the number of lines in the whole account." data-placement="bottom">
 
 		<div id="gitlinecount-button-container">
 			<button class="btn btn-default">Count</button>
 		</div>
 
-		<div id="gitlinecounter-count-container">
-			<p>Count: {{ currLineCount }}</p>
-		</div>
+
+		{{#if isCounting }}
+			<div id="gitlinecounter-count-container">
+				<p>Count: {{ currLineCount }}</p>
+			</div>
+
+			<div class="progress">
+				<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{ percentCounted }}" aria-valuemin="0" style="width:{{ percentCounted }}%">
+				</div>
+			</div>
+		{{/if}}
+
+
 	</div>
 
 
