@@ -79,7 +79,6 @@ meteorhacks:subs-manager@1.2.4
 meteortoys:toykit@0.5.0
 minifiers@1.1.5
 minimongo@1.0.8
-mizzao:bootstrap-3@3.3.1_1
 mizzao:sharejs@0.7.3
 mizzao:sharejs-ace@1.1.8_1
 mobile-status-bar@1.0.3
@@ -114,6 +113,7 @@ standard-app-packages@1.0.5
 stylus@1.0.7
 templating@1.1.1
 tracker@1.0.7
+twbs:bootstrap@3.3.4
 ui@1.0.6
 underscore@1.0.3
 url@1.0.4
