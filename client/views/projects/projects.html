@@ -1,10 +1,9 @@
 <template name="projects">
 	<article>
 
-		<section>
-			<h1>Projects</h1>
+		<section id="projectListSection">
+			<h1>Things I've worked on</h1>
 			{{> projectsProjectList}}
-			<p class="footnote">*Built at a hackathon</p>
 		</section>
 
 		<section>
@@ -17,18 +16,30 @@
 
 <template name="projectsProjectList">
 
-	<ul>
-	    <li><strong><a href="https://github.com/Danappelxx/Pebble-Flip">An instagram client for the Pebble</a></strong></li>
-	    <li><strong><a href="https://github.com/Danappelxx/RSS-News-Spreeder">A RSS 'spreeder' for the Pebble</a></strong></li>
-	    <li><strong><a href="http://danappelxx.github.io">An event-based photo-sharing platform*</a></strong></li>
-	    <li><strong><a href="/">This website</a></strong></li>
-	    <li><strong><a href="{{pathFor 'codepad-base'}}">A codr.io clone</a></strong></li>
-	    <li><strong><a href="#">A Meteor.js wrapper for egg.js (Press: up up down down left right left right b a)</a></strong></li>
-	    <li><strong><a href="{{pathFor 'gitlinecounter'}}">A web-app to count the number of lines of code in a git repository</a></strong></li>
-	</ul>
+	<div class="projectListContainer flexContainer">
+		{{#each projectList }}
+			{{> projectListItem}}
+		{{/each}}
+	</div>
 
 </template>
 
+<template name="projectListItem">
+
+	<div class="projectListItem flexItem">
+		<h2><a href="{{#if isLink link }} {{ link }} {{ else }} {{ pathFor link }} {{/if}}">
+			{{ title }}
+		</a></h2>
+		<p>Technologies Used:</p>
+		<ul>
+			{{#each madeUsing}}
+		    	<li>{{ this }}</li>
+		    {{/each}}
+		</ul>
+		<p class="footnote">{{ footnote }}</p>
+	</div>
+
+</template>
 
 <template name="projectsAchievementList">
 
@@ -43,6 +54,7 @@
 	    	    <li>Javascript</li>
 	    	    <li>Meteor.js</li>
 	    	    <li>nginx</li>
+	    	    <li>Objective-C</li>
 	    	</ul>
 	    </li>
 	</ul>
