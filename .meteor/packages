@@ -17,8 +17,9 @@ mizzao:sharejs-ace
 msavin:mongol
 danappelxx:eggjs
 meteorhacks:fast-render
-spiderable
-gadicohen:phantomjs
 fourseven:scss
 http
 twbs:bootstrap
+dfischer:phantomjs
+gadicohen:phantomjs
+spiderable
