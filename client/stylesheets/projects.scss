@@ -23,6 +23,12 @@
 			&:hover > h2 {
 				transform: translateY(-8px);
 			}
+			&:focus > h2 {
+				transform: translateY(-8px);
+			}
+			&:active > h2 {
+				transform: translateY(-8px);
+			}
 
 			h2 {
 				text-align: center;
