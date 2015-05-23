@@ -26,7 +26,7 @@
 
 <template name="projectListItem">
 
-	<div class="projectListItem flexItem hvr-shutter-out-horizontal">
+	<div class="projectListItem flexItem hvr-shutter-out-horizontal" onclick="void(0)">
 		<h2>
 			<a href="{{#if isLink link }} {{ link }} {{ else }} {{ pathFor link }} {{/if}}">
 				{{ title }}
