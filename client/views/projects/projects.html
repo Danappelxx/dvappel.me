@@ -27,9 +27,11 @@
 <template name="projectListItem">
 
 	<div class="projectListItem flexItem hvr-shutter-out-horizontal">
-		<h2 class="hvr-float"><a href="{{#if isLink link }} {{ link }} {{ else }} {{ pathFor link }} {{/if}}">
-			{{ title }}
-		</a></h2>
+		<h2>
+			<a href="{{#if isLink link }} {{ link }} {{ else }} {{ pathFor link }} {{/if}}">
+				{{ title }}
+			</a>
+		</h2>
 		<p>Technologies Used:</p>
 		<ul>
 			{{#each madeUsing}}

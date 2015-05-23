@@ -20,11 +20,17 @@
 			margin-bottom: 15px;
 			border-radius: 7px;
 
+			&:hover > h2 {
+				transform: translateY(-8px);
+			}
+
 			h2 {
 				text-align: center;
 				margin-top: 0px;
 				border-radius: 7px 7px 0px 0px;
 				background-color: $header-background-color;
+
+				transition: .3s ease-out;
 
 				a {
 					color: $project-item-text-color;
