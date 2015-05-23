@@ -1,0 +1,2 @@
+# Block sensitive api keys (client id, client secret)
+*apikeys.js
