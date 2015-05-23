@@ -81,7 +81,7 @@ Template.gitlinecount.helpers({
 		return Session.get('lineCount');
 	},
 	isCounting: function () {
-		return (Session.get('percentCounted') < 101);
+		return (Session.get('percentCounted') < 100);
 	},
 	percentCounted: function () {
 		return Session.get('percentCounted');

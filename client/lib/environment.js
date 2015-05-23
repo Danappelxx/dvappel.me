@@ -22,7 +22,10 @@ Router.configure({
 	loadingTemplate: 'loading',
 	notFoundTemplate: 'notFound',
 	layoutTemplate: 'layout',
-	fastRender: true
+	fastRender: true,
+	onAfterAction: function () {
+		document.title = 'Dan Appel | ' + this.route.getName().capFirstLetter();
+	},
 });
 
 Router.map(function () {
@@ -83,4 +86,3 @@ Router.map(function () {
 		template: 'gitlinecount'
 	});
 });
-
