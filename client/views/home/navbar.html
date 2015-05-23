@@ -9,10 +9,10 @@
 				<li class="navigation-list-item nav"><a class="hvr-underline-reveal" href="{{pathFor 'contact'}}">Contact Me</a></li>
 				<li class="navigation-list-item nav"><a class="hvr-underline-reveal" href="{{ blogUrl }}">Blog</a></li>
 				{{#if isAdmin}}
-					<li class="navigation-list-item nav"><a href="/admin">Admin</a></li>
+					<li class="navigation-list-item nav"><a class="hvr-underline-reveal" href="/admin">Admin</a></li>
 				{{/if}}
 				{{#if canEditBlog}}
-					<li class="navigation-list-item nav"><a href="/admin/blog">Blog Admin</a></li>
+					<li class="navigation-list-item nav"><a class="hvr-underline-reveal" href="/admin/blog">Blog Admin</a></li>
 				{{/if}}
 				<li class="navigation-list-item nav">{{> loginButtons }}</li>
 			</ul>
