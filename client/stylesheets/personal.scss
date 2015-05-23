@@ -45,7 +45,7 @@ p {
 }
 
 .footer-container > div > ul > li > a {
-	padding-bottom: 0px;
+	padding-bottom: 5px;
 }
 
 @media (min-width: 768px) {
@@ -56,4 +56,15 @@ p {
 	.text-container {
 		width: 50%;
 	}
+}
+
+
+.hvr-underline-reveal {
+	// fancy hover.css stuffs
+	// To fix display issues
+	display: inline-block;
+
+	// &:before {
+		// color: $header-underline-color;
+	// }
 }
