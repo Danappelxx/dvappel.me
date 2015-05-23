@@ -1,7 +1,11 @@
 #projectListSection {
 
 	$main-background-color: #f8f8f8;
+	$hover-background-color: #E5837C;
+	$hover-text-color: #ffffff;
 	$header-background-color: #545454;
+	// $header-background-color-hover: #EA7A60;
+	$project-item-text-color: whitesmoke;
 	$project-item-width: 300px;
 	$project-item-height: 250px;
 
@@ -21,10 +25,18 @@
 				margin-top: 0px;
 				border-radius: 7px 7px 0px 0px;
 				background-color: $header-background-color;
+
 				a {
-					color: whitesmoke;
+					color: $project-item-text-color;
+					&:hover {
+						text-decoration: underline $hover-background-color;
+					}
+					&:focus {
+						text-decoration: underline $hover-background-color;
+					}
 				}
 			}
+
 
 			p {
 				margin-left: 10px;
@@ -35,9 +47,9 @@
 			.footnote {
 				font-size: 10px;
 				padding-left: 10px;
-				color: grey;
+				// color: grey;
 				position: absolute;
-				top: $project-item-height + 100px + 5px; // 5px is 'extra' - just makes it look nicer (but not really for formatting)
+				top: $project-item-height - 20px; // Magic number - idk why it works but trial & error got me to it
 			}
 		}
 	}
@@ -54,6 +66,18 @@
 		.flexItem {
 			flex-grow: 0;
 			flex-shrink: 0;
+		}
+	}
+
+	// For fancy hover.css stuffs
+	.hvr-shutter-out-horizontal {
+
+		&:before {
+			border-radius: 7px;
+			background-color: $hover-background-color;
+		}
+		&:hover {
+			color: $hover-text-color;
 		}
 	}
 }

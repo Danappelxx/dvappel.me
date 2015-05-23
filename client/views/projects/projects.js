@@ -13,7 +13,11 @@ egg
 	}).Listen();
 
 
-
+// Template.projects.rendered = function () {
+// 	$('.projectListItem').hover( function() {
+// 		$(this).find('h2').toggleClass('float-hover');
+// 	});
+// };
 
 Template.projectListItem.helpers({
 	isLink: function (url) {
