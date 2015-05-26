@@ -13,13 +13,28 @@ Template.gitlinecount.events({
 					var newLineCount = currLineCount + result;
 					Session.set('lineCount', newLineCount);
 					countedFiles++;
-					Session.set('percentCounted', Math.round((countedFiles/numFiles) * 100));
+
+					var newPercent = Math.ceil((countedFiles/numFiles) * 100);
+
+					Session.set('percentCounted', newPercent);
+
+					if ( newPercent == 100 ) {
+						done = true;
+					} else {
+						done = false;
+					}
+				} else {
+					sAlert.warning('Something went wrong on one file', {
+						effect: 'slide',
+						position: 'top-right',
+						stack: 'true'
+					});
 				}
 			});
-
 		};
 
 		var countDir = function (files) {
+			timedOut = false;
 
 			numFiles += files.length;
 
@@ -36,6 +51,7 @@ Template.gitlinecount.events({
 		};
 
 		var countRepos = function (repos) {
+			timedOut = false;
 			repos.forEach(function (repo) {
 				var repoUrl = repo.contents_url.split('/{+path}')[0];
 				Meteor.call('appendGithubClientStuffs', repoUrl, function (error, result) {
@@ -57,13 +73,34 @@ Template.gitlinecount.events({
 		Session.set('isCounting', true);
 		Session.set('percentCounted', 0);
 
+		var timedOut = true; // set to true by default
+		var timeOutDuration = 1000;
+
+		var checkTimeOut = function () {
+			if(timedOut) {
+				sAlert.error('This is taking a while... maybe you entered something wrong?');
+			}
+		};
+
+		var takingAWhileDuration = 3000;
+		var done = false;
+
+		var takingAWhile = function () {
+			if (!timedOut && !done) {
+				sAlert.info('This might take a while. Be patient!');
+			}
+		};
+
 		if( repoName === '') {
 			// No repository name -> count all repositories
 
 			repoRequestUrl = 'https://api.github.com/users/' + repoOwner + '/repos';
 			Meteor.call('appendGithubClientStuffs', repoRequestUrl, function (error, result) {
 				$.getJSON(result, countRepos);
+				setTimeout(checkTimeOut, timeOutDuration);
+				setTimeout(takingAWhile, takingAWhileDuration);
 			});
+
 		} else {
 			// Yes repository name -> count just this repository
 
@@ -71,7 +108,10 @@ Template.gitlinecount.events({
 			var repoContentRequestUrl = repoRequestUrl + '/contents';
 			Meteor.call('appendGithubClientStuffs', repoContentRequestUrl, function (error, result) {
 				$.getJSON(result, countDir);
+				setTimeout(checkTimeOut, timeOutDuration);
+				setTimeout(takingAWhile, takingAWhileDuration);
 			});
+
 		}
 	}
 });
@@ -80,8 +120,11 @@ Template.gitlinecount.helpers({
 	currLineCount: function () {
 		return Session.get('lineCount');
 	},
+	hasStartedCounting: function () {
+		return (Session.get('lineCount') > 0);
+	},
 	isCounting: function () {
-		return (Session.get('percentCounted') < 100);
+		return (Math.floor(Session.get('percentCounted')) < 100);
 	},
 	percentCounted: function () {
 		return Session.get('percentCounted');

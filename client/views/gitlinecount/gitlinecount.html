@@ -12,16 +12,17 @@
 			<button class="btn btn-default">Count</button>
 		</div>
 
+		{{#if hasStartedCounting }}
 
-		{{#if isCounting }}
 			<div id="gitlinecounter-count-container">
 				<p>Count: {{ currLineCount }}</p>
 			</div>
 
 			<div class="progress">
-				<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{ percentCounted }}" aria-valuemin="0" style="width:{{ percentCounted }}%">
+				<div class="progress-bar progress-bar-striped {{#if isCounting}} active {{else}} {{/if}}" role="progressbar" aria-valuenow="{{ percentCounted }}" aria-valuemin="0" style="width:{{ percentCounted }}%">
 				</div>
 			</div>
+
 		{{/if}}
 
 	</div>

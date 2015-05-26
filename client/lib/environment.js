@@ -1,5 +1,15 @@
 // Configuration of any client side packages
 
+sAlert.config({
+	effect: 'genie',
+	position: 'top',
+	timeout: 3000,
+	html: false,
+	onRouteClose: true,
+	stack: false,
+	offset: 0
+});
+
 Accounts.ui.config({
 	requestPermissions: {},
 	passwordSignupFields: "EMAIL_ONLY"
