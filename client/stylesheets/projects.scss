@@ -81,6 +81,16 @@
 		}
 	}
 
+	@media only screen and (max-width : 768px) {
+		.flexContainer {
+			justify-content: center;
+		}
+
+		h1:first-child {
+			text-align: center;
+		}
+	}
+
 	// For fancy hover.css stuffs
 	.hvr-shutter-out-horizontal {
 

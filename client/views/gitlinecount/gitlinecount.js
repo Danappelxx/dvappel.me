@@ -133,5 +133,4 @@ Template.gitlinecount.helpers({
 
 Template.gitlinecount.rendered = function () {
 	$('#repo-name-input').tooltip({'trigger':'focus'});
-	// , 'title': 'You can leave this blank to get the number of lines in the whole account.'});
 };
