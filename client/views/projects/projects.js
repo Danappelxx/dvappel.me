@@ -24,7 +24,6 @@ Template.projectListItem.helpers({
 
 Meteor.call('getProjectList', function (error, result) {
 	if (!error) {
-		console.log(result.projectList);
 		Session.set('projectList', result.projectList);
 	}
 });

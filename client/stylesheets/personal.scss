@@ -1,17 +1,23 @@
-#main-content-container {
-	width: 80%;
-	margin: 0 auto;
+@import "var/variables";
+
+html, body {
+	font-family: 'Open Sans', sans-serif;
 }
 
-.navbar.center {
-	text-align: center;
+.navbar {
+	margin-bottom: 0px;
+
+	&.center {
+		text-align: center;
+
+		.nav {
+			display: inline-block;
+			float: none;
+		}
+	}
 }
 
-.navbar.center .nav {
-	display: inline-block;
-	float: none;
-}
-
+// lol
 .text-center {
 	text-align: center;
 }
@@ -19,6 +25,7 @@
 .center-text {
 	text-align: center;
 }
+// /lol
 
 #login-container {
 	float: right;
@@ -58,13 +65,8 @@ p {
 	}
 }
 
-
 .hvr-underline-reveal {
 	// fancy hover.css stuffs
 	// To fix display issues
 	display: inline-block;
-
-	// &:before {
-		// color: $header-underline-color;
-	// }
 }

@@ -1,0 +1,19 @@
+@import "var/variables";
+
+.divider {
+	height: 300px;
+	width: 100% !important;
+	background-repeat: no-repeat !important;
+	background-size: 100% !important;
+}
+
+#divider-1 {
+	background: url('divider_1.jpg');
+	background-position: 0px 0px; //70
+
+}
+
+#divider-2 {
+	background: url('divider_2.jpg');
+	background-position: 0px 0px; //40
+}
