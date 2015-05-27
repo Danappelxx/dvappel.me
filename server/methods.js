@@ -26,5 +26,8 @@ Meteor.methods({
 
 		var fullUrl = baseUrl + 'client_id=' + GITLINECOUNTER_CLIENT_ID + '&client_secret=' + GITLINECOUNTER_CLIENT_SECRET;
 		return fullUrl;
+	},
+	getProjectList: function () {
+		return JSON.parse(Assets.getText('projects.json'));
 	}
 });
