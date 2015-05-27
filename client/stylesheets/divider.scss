@@ -5,15 +5,17 @@
 	width: 100% !important;
 	background-repeat: no-repeat !important;
 	background-size: 100% !important;
-	background-attachment: fixed !important;
+	@media only screen and (min-width : 768px) {
+		background-attachment: fixed !important;
+	}
 }
 
 #divider-1 {
 	background: url('divider_1.jpg');
-	background-position: 0px 0px; //70
+	background-position: 0px 0px;
 }
 
 #divider-2 {
 	background: url('divider_2.jpg');
-	background-position: 0px 0px; //40
+	background-position: 0px 0px;
 }

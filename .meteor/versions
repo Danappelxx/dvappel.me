@@ -104,8 +104,7 @@ mongo-livedata@1.0.8
 mrt:accounts-admin-ui-bootstrap-3@0.2.7
 mrt:moment@2.8.1
 mrt:underscore-string-latest@2.3.3
-msavin:mongol@1.0.70
-noorderstorm:stellar@0.1.0
+msavin:mongol@1.0.80
 npm-bcrypt@0.7.8_2
 oauth@1.1.4
 oauth2@1.1.3
