@@ -24,7 +24,7 @@ Template.projectListItem.helpers({
 
 
 Template.projectsProjectList.helpers({
-	// In the future, make this a collection
+	// In the future, make this a collection or at the very least a json file in the private directory
 	projectList: [
 		{
 			title: '(This website) Dvappel.me',
@@ -48,8 +48,8 @@ Template.projectsProjectList.helpers({
 				'Share.js',
 				'Ace Editor',
 			],
-			github_link: '',
-			footnote: ''
+			github_link: 'https://github.com/Danappelxx/dvappel.me/tree/master/client/views/codepad',
+			footnote: 'Another component is <a href="https://github.com/Danappelxx/dvappel.me/blob/master/client/lib/router.js#L43">here</a>.'
 		},
 		{
 			title: 'Meteor-packaged wrapper for egg.js',
@@ -58,7 +58,7 @@ Template.projectsProjectList.helpers({
 				'Meteor.js',
 				'Egg.js'
 			],
-			github_link: 'https://github.com/Danappelxx/meteor-eggjs/',
+			github_link: 'https://github.com/Danappelxx/meteor-eggjs',
 			footnote: 'Up Up Down Down Left Right Left Right B A'
 		},
 		{
@@ -69,7 +69,7 @@ Template.projectsProjectList.helpers({
 				'Javascript',
 				'Meteor.js',
 			],
-			github_link: '',
+			github_link: 'https://github.com/Danappelxx/dvappel.me/tree/master/client/views/gitlinecount',
 			footnote: 'Counts public accounts and their repositories'
 		},
 		{
@@ -93,7 +93,7 @@ Template.projectsProjectList.helpers({
 				'Javascript',
 				'Google Feed API (RSS ➔ JSON)'
 			],
-			github_link: 'ttps://github.com/Danappelxx/RSS-News-Spreeder',
+			github_link: 'https://github.com/Danappelxx/RSS-News-Spreeder',
 			footnote: 'Reads all valid RSS and Atom feeds'
 		},
 		{
@@ -105,8 +105,8 @@ Template.projectsProjectList.helpers({
 				'Parse',
 				'Bootstrap',
 			],
-			github_link: '',
-			footnote: 'Won 1st place at HSHacksII for \'First Time Hack\''
+			github_link: 'https://github.com/danappelxx/danappelxx.github.io',
+			footnote: 'Won 1st place at <a href="http://hshacks2.challengepost.com">HSHacksII</a> for \'First Time Hack\''
 		},
 	],
 });
