@@ -12,13 +12,6 @@ egg
 		console.log(this.activeEgg.metadata);
 	}).Listen();
 
-
-// Template.projects.rendered = function () {
-// 	$('.projectListItem').hover( function() {
-// 		$(this).find('h2').toggleClass('float-hover');
-// 	});
-// };
-
 Template.projectListItem.helpers({
 	isLink: function (url) {
 		if ( url.startsWith('http://') || url.startsWith('https://') ) {
@@ -34,39 +27,6 @@ Template.projectsProjectList.helpers({
 	// In the future, make this a collection
 	projectList: [
 		{
-			title: 'Instagram Client for the Pebble',
-			link: 'https://github.com/Danappelxx/Pebble-Flip',
-			madeUsing: [
-				'Instagram API',
-				'Pebble sdk',
-				'Pebble-JS',
-				'Python',
-				'C',
-			],
-			footnote: ''
-		},
-		{
-			title: 'RSS \'spreeder\' for the Pebble',
-			link: 'https://github.com/Danappelxx/RSS-News-Spreeder',
-			madeUsing: [
-				'Pebble-JS',
-				'Javascript',
-				'Google Feed API (RSS ➔ JSON)'
-			],
-			footnote: ''
-		},
-		{
-			title: 'Event-based photo-sharing platform',
-			link: 'http://danappelxx.github.io',
-			madeUsing: [
-				'Objective-C',
-				'Javascript',
-				'Parse',
-				'Bootstrap',
-			],
-			footnote: 'Made at HSHacksII'
-		},
-		{
 			title: '(This website) Dvappel.me',
 			link: 'home',
 			madeUsing: [
@@ -74,9 +34,10 @@ Template.projectsProjectList.helpers({
 				'SCSS',
 				'Accounts-Github',
 				'PhantomJS',
-				'Ryw:blog',
-				'Bootstrap'
+				'Bootstrap',
+				'Hover.css',
 			],
+			github_link: 'https://github.com/danappelxx/dvappel.me',
 			footnote: 'Also used to host some projects'
 		},
 		{
@@ -87,6 +48,7 @@ Template.projectsProjectList.helpers({
 				'Share.js',
 				'Ace Editor',
 			],
+			github_link: '',
 			footnote: ''
 		},
 		{
@@ -96,7 +58,8 @@ Template.projectsProjectList.helpers({
 				'Meteor.js',
 				'Egg.js'
 			],
-			footnote: ''
+			github_link: 'https://github.com/Danappelxx/meteor-eggjs/',
+			footnote: 'Up Up Down Down Left Right Left Right B A'
 		},
 		{
 			title: 'Github line-of-code counter',
@@ -106,8 +69,44 @@ Template.projectsProjectList.helpers({
 				'Javascript',
 				'Meteor.js',
 			],
+			github_link: '',
+			footnote: 'Counts public accounts and their repositories'
+		},
+		{
+			title: 'Instagram Client for the Pebble',
+			link: 'https://github.com/Danappelxx/Pebble-Flip',
+			madeUsing: [
+				'Instagram API',
+				'Pebble sdk',
+				'Pebble-JS',
+				'Python',
+				'C',
+			],
+			github_link: 'https://github.com/Danappelxx/Pebble-Flip',
 			footnote: ''
 		},
-
+		{
+			title: 'RSS \'spreeder\' for the Pebble',
+			link: 'https://github.com/Danappelxx/RSS-News-Spreeder',
+			madeUsing: [
+				'Pebble-JS',
+				'Javascript',
+				'Google Feed API (RSS ➔ JSON)'
+			],
+			github_link: 'ttps://github.com/Danappelxx/RSS-News-Spreeder',
+			footnote: 'Reads all valid RSS and Atom feeds'
+		},
+		{
+			title: 'Event-based photo-sharing platform',
+			link: 'http://danappelxx.github.io',
+			madeUsing: [
+				'Objective-C',
+				'Javascript',
+				'Parse',
+				'Bootstrap',
+			],
+			github_link: '',
+			footnote: 'Won 1st place at HSHacksII for \'First Time Hack\''
+		},
 	],
 });
