@@ -2,3 +2,5 @@
 Meteor.startup( function () {
 	// ...
 });
+
+Meteor.subscribe('chatroom');

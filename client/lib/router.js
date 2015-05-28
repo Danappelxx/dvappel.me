@@ -61,8 +61,15 @@ Router.map(function () {
 		}
 	});
 
+	// Github line counter
 	this.route('gitlinecounter', {
 		path: '/gitlinecounter',
 		template: 'gitlinecount'
+	});
+
+	// Chatroom
+	this.route('chatroom', {
+		path: '/chatroom',
+		template: 'chatroom'
 	});
 });

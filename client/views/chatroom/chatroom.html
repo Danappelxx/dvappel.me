@@ -1,0 +1,40 @@
+<template name="chatroom">
+
+	<article>
+
+		<h1>Chatroom</h1>
+
+		<div id="chatroom-container">
+
+			<div id="messages">
+
+				{{#each messages }}
+					{{> message }}
+				{{/each}}
+
+			</div>
+
+			<div class="new-message-container">
+				<form class="new-message">
+					<input name="text" type="text" placeholder="Type your message here" class="form-control" />
+				</form>
+			</div>
+
+		</div>
+
+	</article>
+
+</template>
+
+<template name="message">
+
+	<div class="message">
+		<p>
+			{{#if isModerator }}
+				<a class="remove-message" href="#"><i class="fa fa-remove"></i></a>
+			{{/if}}
+			<span class="username">{{ username }}</span>: {{ message }}
+		</p>
+	</div>
+
+</template>

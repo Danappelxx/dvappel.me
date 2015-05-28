@@ -1,0 +1,1 @@
+this.Chatroom = new Mongo.Collection('chatroom');

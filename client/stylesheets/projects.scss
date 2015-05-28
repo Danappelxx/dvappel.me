@@ -67,6 +67,10 @@
 					font-size: 10px;
 					position: absolute;
 					top: $project-item-height - 20px; // Magic number - idk why it works but trial & error got me to it
+
+					a {
+						color: inherit;
+					}
 				}
 			}
 		}

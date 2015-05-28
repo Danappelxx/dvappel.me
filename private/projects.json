@@ -15,6 +15,17 @@
 			"footnote": "Also used to host some projects"
 		},
 		{
+			"title": "A real-time chatroom with users and mods",
+			"link": "chatroom",
+			"madeUsing": [
+				"Meteorjs",
+				"Javascript",
+				"juliancwirko:s-alert"
+			],
+			"github_link": "https://github.com/Danappelxx/dvappel.me/tree/master/client/views/chatroom",
+			"footnote": "Another small snippet <a href='https://github.com/Danappelxx/dvappel.me/blob/master/server/methods.js#L37'>here</a>"
+		},
+		{
 			"title": "Online collaborative code editor",
 			"link": "codepad-base",
 			"madeUsing": [
@@ -23,7 +34,7 @@
 				"Ace Editor"
 			],
 			"github_link": "https://github.com/Danappelxx/dvappel.me/tree/master/client/views/codepad",
-			"footnote": "Another component is <a href='https://github.com/Danappelxx/dvappel.me/blob/master/client/lib/router.js#L43'>here</a>."
+			"footnote": "Another small snippet <a href='https://github.com/Danappelxx/dvappel.me/blob/master/client/lib/router.js#L43'>here</a>."
 		},
 		{
 			"title": "Meteor-packaged wrapper for egg.js",
