@@ -44,10 +44,14 @@ Meteor.methods({
 		}
 
 		var username;
-		if (Meteor.user().username) {
-			username = Meteor.user().username;
-		} else {
+		if (Meteor.user().services.github) {
+			username = Meteor.user().services.github.username;
+		} else if (Meteor.user().profile.name) {
+			username = Meteor.user().profile.name;
+		} else if (Meteor.user().emails) {
 			username = Meteor.user().emails[0].address;
+		} else {
+			username = 'unknown';
 		}
 
 		Chatroom.insert({
@@ -61,7 +65,6 @@ Meteor.methods({
 		if(!_.contains(Meteor.user().roles, 'chatMod')) { // not chat moderator
 			throw new Meteor.error('not-authorized', 'user is not a chat moderator');
 		}
-
 		Chatroom.remove(messageId);
 	}
 });
