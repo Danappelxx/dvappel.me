@@ -35,7 +35,7 @@ Meteor.methods({
 	},
 
 	// Chatroom
-	newMessage: function (messageContent) {
+	newMessage: function (messageContent, roomName) {
 		if (! Meteor.userId()) {
 			throw new Meteor.Error('not-authorized', 'user is not logged in');
 		}
@@ -54,11 +54,12 @@ Meteor.methods({
 			username = 'unknown';
 		}
 
-		Chatroom.insert({
+		Messages.insert({
 			message: messageContent,
 			sent: new Date(),
 			user: Meteor.userId(),
-			username: username
+			username: username,
+			roomName: roomName,
 		});
 	},
 	removeMessage: function (messageId) {
@@ -66,5 +67,61 @@ Meteor.methods({
 			throw new Meteor.error('not-authorized', 'user is not a chat moderator');
 		}
 		Chatroom.remove(messageId);
+	},
+	createChatroom: function (roomName) {
+		if( Chatrooms.findOne({'roomName': roomName}) ) {
+			return false;
+		} else {
+			Chatrooms.insert({
+				roomName: roomName,
+				users: []
+			});
+		}
+	},
+	addUserToRoom: function (roomName) {
+
+		Chatrooms.upsert(
+			{
+				// Selector
+				roomName: roomName
+			},
+			{
+				// Modifier
+				$push: {
+					users: Meteor.user()
+				}
+			}
+		);
+
 	}
 });
+
+// Chat rooms
+// 		Chat Room
+// 			Messages
+// 				Message Content
+// 				Username
+// 				User id
+// 				Timestamp
+// 			Users online?
+// 				Username
+// 				User id
+
+// In JSON:
+
+// [
+// 	{
+// 		roomName: "...",
+// 		messages: [
+// 			{
+// 				// ...
+// 			}
+// 		],
+// 		users: [
+// 			{
+// 				username: '...',
+// 				userid: '...'
+// 			}
+// 		]
+// 	}
+// ]

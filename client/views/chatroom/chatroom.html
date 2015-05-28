@@ -1,28 +1,28 @@
 <template name="chatroom">
 
-	<article>
+		{{> newChatroom}}
 
-		<h1>Chatroom</h1>
+		{{> chatroomList}}
 
 		<div id="chatroom-container">
 
-			<div id="messages">
+			{{> messages }}
 
-				{{#each messages }}
-					{{> message }}
-				{{/each}}
-
-			</div>
-
-			<div class="new-message-container">
-				<form class="new-message">
-					<input name="text" type="text" placeholder="Type your message here" class="form-control" />
-				</form>
-			</div>
+			{{> newMessage }}
 
 		</div>
 
-	</article>
+</template>
+
+<template name="messages">
+
+	<div id="messages">
+
+		{{#each messages }}
+			{{> message }}
+		{{/each}}
+
+	</div>
 
 </template>
 
@@ -35,6 +35,16 @@
 			{{/if}}
 			<span class="username">{{ username }}</span>: {{ message }}
 		</p>
+	</div>
+
+</template>
+
+<template name="newMessage">
+
+	<div class="new-message-container">
+		<form class="new-message">
+			<input name="text" type="text" placeholder="Type your message here" class="form-control" />
+		</form>
 	</div>
 
 </template>
