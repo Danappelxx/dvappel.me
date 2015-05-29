@@ -18,11 +18,10 @@
 
 	<div class="projectListContainer flexContainer">
 
-		{{#if projectListLoaded }}
-			{{#each projectList }}
-				{{> projectListItem}}
-			{{/each}}
-		{{/if}}
+		{{#each projectList }}
+			{{> projectListItem}}
+		{{/each}}
+
 	</div>
 
 </template>

@@ -29,11 +29,6 @@ Meteor.methods({
 		return fullUrl;
 	},
 
-	// Projects page
-	getProjectList: function () {
-		return JSON.parse(Assets.getText('projects.json'));
-	},
-
 	// Chatroom
 	newMessage: function (messageContent) {
 		if (! Meteor.userId()) {
