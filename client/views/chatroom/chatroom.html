@@ -1,4 +1,19 @@
+<template name="chatroomHome">
+
+	<article>
+
+			<h1>Chatroom</h1>
+
+			{{> chatroom }}
+
+	</article>
+
+</template>
+
+
 <template name="chatroom">
+
+		{{!-- This should be an example implementation - the user should have access to all of these templates ( this shown in demo?) --}}
 
 		{{> newChatroom}}
 
@@ -13,6 +28,50 @@
 		</div>
 
 </template>
+
+
+
+<template name="newChatroom">
+
+			<div id="new-chatroom-container">
+
+				<input placeholder="Chatroom name" type="text" class="form-control"/>
+
+				<button class="btn btn-default">New Chatroom</button>
+
+			</div>
+
+</template>
+
+
+<template name="chatroomList">
+
+	<div class="room-name-list">
+
+		{{#each chatrooms}}
+
+			<div class="room-name-list-item {{#if isActive this }}active-room{{/if}}">
+
+				{{#if isModOrAdmin }}
+
+					<a class="remove-room" href="#"><i class="fa fa-remove"></i></a>
+
+				{{/if}}
+
+				<a class="room-name" href="#">
+					{{ roomName }}
+				</a>
+
+			</div>
+
+		{{/each}}
+
+	</div>
+
+</template>
+
+
+
 
 <template name="messages">
 
@@ -30,7 +89,7 @@
 
 	<div class="message">
 		<p>
-			{{#if isModerator }}
+			{{#if isModOrAdmin }}
 				<a class="remove-message" href="#"><i class="fa fa-remove"></i></a>
 			{{/if}}
 			<span class="username">{{ username }}</span>: {{ message }}

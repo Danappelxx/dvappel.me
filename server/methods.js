@@ -34,8 +34,10 @@ Meteor.methods({
 		return JSON.parse(Assets.getText('projects.json'));
 	},
 
+
+
 	// Chatroom
-	newMessage: function (messageContent, roomName) {
+	newMessage: function (messageContent, roomId) {
 		if (! Meteor.userId()) {
 			throw new Meteor.Error('not-authorized', 'user is not logged in');
 		}
@@ -59,43 +61,58 @@ Meteor.methods({
 			sent: new Date(),
 			user: Meteor.userId(),
 			username: username,
-			roomName: roomName,
+			roomId: roomId,
 		});
 	},
 	removeMessage: function (messageId) {
 		if(!_.contains(Meteor.user().roles, 'chatMod')) { // not chat moderator
 			throw new Meteor.error('not-authorized', 'user is not a chat moderator');
 		}
-		Chatroom.remove(messageId);
+		Messages.remove(messageId);
 	},
 	createChatroom: function (roomName) {
+
+		if( !Meteor.user() ) {
+			throw new Meteor.error('not-authorized', 'user is not logged in');
+		}
+
 		if( Chatrooms.findOne({'roomName': roomName}) ) {
 			return false;
 		} else {
 			Chatrooms.insert({
 				roomName: roomName,
-				users: []
+				users: [],
+				moderators: [
+					Meteor.user(),
+				],
+				createdAt: new Date()
 			});
 		}
 	},
-	addUserToRoom: function (roomName) {
+	addUserToRoom: function (roomId) {
 
 		Chatrooms.upsert(
 			{
 				// Selector
-				roomName: roomName
+				_id: roomId
 			},
 			{
 				// Modifier
-				$push: {
+				$addToSet: {
 					users: Meteor.user()
 				}
 			}
 		);
 
+	},
+	removeChatroom: function (roomId) {
+		Chatrooms.remove(roomId);
+		Messages.remove({'roomId': roomId});
 	}
 });
 
+
+// NO LONGER ACCURATE!
 // Chat rooms
 // 		Chat Room
 // 			Messages
