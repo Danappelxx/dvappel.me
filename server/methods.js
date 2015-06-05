@@ -67,10 +67,11 @@ Meteor.methods({
 	removeMessage: function (messageId, roomId) {
 		if(!Meteor.user()) {
 			// not a user
-			throw new Meteor.error('not-authorized', 'not logged in');
+			throw new Meteor.Error('not-logged-in', 'not logged in');
 		}
 		if ( _.contains(Meteor.user().roles, 'admin')  ) {
 			// user is admin
+			Messages.remove(messageId);
 			return true;
 		}
 
@@ -85,17 +86,17 @@ Meteor.methods({
 		if (isMod) {
 			Messages.remove(messageId);
 		} else {
-			throw new Meteor.error('not-authorized', 'not a chat moderator');
+			throw new Meteor.Error('not-authorized', 'not a chat moderator');
 		}
 	},
 	createChatroom: function (roomName) {
 
-		if( !Meteor.user() ) {
-			throw new Meteor.error('not-authorized', 'user is not logged in');
+		if(! Meteor.userId()) {
+			throw new Meteor.Error('not-authorized', 'user is not logged in');
 		}
 
 		if( Chatrooms.findOne({'roomName': roomName}) ) {
-			return false;
+			throw new Meteor.Error('room-exists', 'chatroom with same name exists');
 		} else {
 			Chatrooms.insert({
 				roomName: roomName,

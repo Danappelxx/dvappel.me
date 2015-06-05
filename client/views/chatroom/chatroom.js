@@ -28,8 +28,13 @@ Controller('message', {
 
 		Meteor.call('removeMessage', this._id, this.roomId, function (error, result) {
 
-			if (!error) {
-				// Celebrate
+			if (!error)
+				sAlert.success('Message removed!', {position: 'top-right', 'stack': true});
+			else {
+				if ( error.error === 'not-logged-in')
+					sAlert.error('You need to log in first (Scroll back to the top)');
+				if ( error.error === 'not-authorized')
+					sAlert.error('You have to be a chat moderator', {position: 'top-right', 'stack': true});
 			}
 
 		});
@@ -50,8 +55,14 @@ Controller('newMessage', {
 			var roomId = Session.get('currRoom');
 
 			Meteor.call('newMessage', message, roomId, function (error, result) {
-				if(!error) {
+				if (!error) {
 					//celebrate!
+					sAlert.success('Sent message!', {position: 'top-right', 'stack': true});
+				} else {
+					if ( error.error === 'not-authorized')
+						sAlert.error('You need to log in first (Scroll back to the top)');
+					if ( error.error === 'empty-message')
+						sAlert.error('Your message is empty!', {position: 'top-right', 'stack': true});
 				}
 			});
 
@@ -64,6 +75,11 @@ Controller('newMessage', {
 
 // Chatroom list
 Controller('chatroomList', {
+	created: function () {
+		if( Chatrooms.findOne())
+			Session.set('currRoom',Chatrooms.findOne()._id);
+	},
+
 	helpers: {
 		// Get all chatrooms
 		chatrooms: function () {
@@ -104,7 +120,11 @@ Controller('chatroomList', {
 
 			Meteor.call('removeChatroom', this._id, function (error, result) {
 				if (!error) {
-					// Celebrate!
+					sAlert.success('Removed chatroom!', {position: 'top-right', 'stack': true});
+				} else {
+					// if (error.error === '') {
+					// 	sAlert.error('');
+					// }
 				}
 			});
 
@@ -124,12 +144,19 @@ Controller('newChatroom', {
 			if (roomName !== '') {
 
 				Meteor.call('createChatroom', roomName, function (error, result) {
-					if(!error) {
-						// Celebrate!
+					if (!error) {
+						sAlert.success('Created chatroom!', {position: 'top'});
+					} else {
+						if (error.error === 'not-authorized') {
+							sAlert.error('You need to log in first (Scroll back to the top)');
+						}
+						if (error.error === 'room-exists')
+							sAlert.error('A room with the same name already exists!', {position: 'top-right', stack: true});
 					}
 				});
 			} else {
 
+				sAlert.error('Chatroom name cannot be empty!', {position: 'top-right', 'stack': true});
 			}
 
 			return false;

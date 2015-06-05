@@ -3,12 +3,6 @@ Meteor.startup( function () {
 	// ...
 });
 
-// Meteor.subscribe('chatroom');
-
-Meteor.subscribe('chatrooms', {
-	onReady: function () {
-		Session.set('currRoom',Chatrooms.findOne()._id);
-	}
-});
+Meteor.subscribe('chatrooms');
 
 Meteor.subscribe('messages');
