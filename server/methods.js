@@ -64,11 +64,29 @@ Meteor.methods({
 			roomId: roomId,
 		});
 	},
-	removeMessage: function (messageId) {
-		if(!_.contains(Meteor.user().roles, 'chatMod')) { // not chat moderator
-			throw new Meteor.error('not-authorized', 'user is not a chat moderator');
+	removeMessage: function (messageId, roomId) {
+		if(!Meteor.user()) {
+			// not a user
+			throw new Meteor.error('not-authorized', 'not logged in');
 		}
-		Messages.remove(messageId);
+		if ( _.contains(Meteor.user().roles, 'admin')  ) {
+			// user is admin
+			return true;
+		}
+
+		var userId = Meteor.userId();
+		var curr_rom = Chatrooms.findOne({_id: roomId});  // Get current chatroom
+		moderators = curr_rom.moderators;
+
+		var isMod = moderators.some( function (moderator) { // return true if any of the moderators match the current user
+			return moderator._id == userId;
+		});
+
+		if (isMod) {
+			Messages.remove(messageId);
+		} else {
+			throw new Meteor.error('not-authorized', 'not a chat moderator');
+		}
 	},
 	createChatroom: function (roomName) {
 
@@ -110,35 +128,3 @@ Meteor.methods({
 		Messages.remove({'roomId': roomId});
 	}
 });
-
-
-// NO LONGER ACCURATE!
-// Chat rooms
-// 		Chat Room
-// 			Messages
-// 				Message Content
-// 				Username
-// 				User id
-// 				Timestamp
-// 			Users online?
-// 				Username
-// 				User id
-
-// In JSON:
-
-// [
-// 	{
-// 		roomName: "...",
-// 		messages: [
-// 			{
-// 				// ...
-// 			}
-// 		],
-// 		users: [
-// 			{
-// 				username: '...',
-// 				userid: '...'
-// 			}
-// 		]
-// 	}
-// ]

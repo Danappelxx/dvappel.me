@@ -15,8 +15,6 @@
 
 		{{!-- This should be an example implementation - the user should have access to all of these templates ( this shown in demo?) --}}
 
-		{{> newChatroom}}
-
 		{{> chatroomList}}
 
 		<div id="chatroom-container">
@@ -31,18 +29,6 @@
 
 
 
-<template name="newChatroom">
-
-			<div id="new-chatroom-container">
-
-				<input placeholder="Chatroom name" type="text" class="form-control"/>
-
-				<button class="btn btn-default">New Chatroom</button>
-
-			</div>
-
-</template>
-
 
 <template name="chatroomList">
 
@@ -54,7 +40,9 @@
 
 				{{#if isModOrAdmin }}
 
-					<a class="remove-room" href="#"><i class="fa fa-remove"></i></a>
+					<a class="remove-room" href="#">
+						<i class="fa fa-remove"></i>
+					</a>
 
 				{{/if}}
 
@@ -66,10 +54,25 @@
 
 		{{/each}}
 
+		{{> newChatroom}}
+
 	</div>
 
 </template>
 
+<template name="newChatroom">
+
+			<div id="new-chatroom-container" class="room-name-list-item">
+
+				<input placeholder="New Room" type="text" class="form-control"/>
+
+				<a href="#">
+					<i class="fa fa-plus"></i>
+				</a>
+
+			</div>
+
+</template>
 
 
 
