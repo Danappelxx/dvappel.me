@@ -1,5 +1,81 @@
 @import "var/variables";
 
+
+.room-name-list {
+
+	background-color: $theme-color-main;
+	width: 80%;
+	margin: 0 auto;
+	border-bottom: 1px solid rgba(255,255,255,0.5);
+	overflow-x: auto;
+	white-space: nowrap;
+
+	a {
+		text-decoration: none;
+	}
+
+	.room-name-list-item {
+
+		display: inline-block;
+		padding: 5px;
+
+
+		&:hover {
+			background-color: rgba(255,255,255,0.5);
+		}
+
+		a {
+			color: whitesmoke;
+		}
+
+		.room-name {
+
+		}
+
+		.remove-room {
+
+		}
+	}
+
+	.active-room {
+		background-color: rgba(255,255,255,0.5);
+	}
+
+	#new-chatroom-container {
+
+		input {
+			display: inline-block;
+			width: 7em;
+			border: 1px solid rgba(255,255,255,0.5);
+			border-radius: 0px;
+			background-color: $theme-color-main;
+			color: whitesmoke;
+			box-shadow: none;
+			height: 20px;
+
+			$placeholder-color: whitesmoke;
+			&::-webkit-input-placeholder {
+			   color: $placeholder-color;
+			}
+
+			&:-moz-placeholder { /* Firefox 18- */
+			   color: $placeholder-color;
+			}
+
+			&::-moz-placeholder {  /* Firefox 19+ */
+			   color: $placeholder-color;
+			}
+
+			&:-ms-input-placeholder {
+			   color: $placeholder-color;
+			}
+		}
+	}
+}
+
+
+// Actual chatroom
+
 #chatroom-container {
 	width: 80%;
 	height: 75vh;

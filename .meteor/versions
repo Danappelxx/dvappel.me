@@ -130,6 +130,7 @@ srp@1.0.3
 standard-app-packages@1.0.5
 stylus@1.0.7
 templating@1.1.1
+themeteorchef:controller@1.2.0
 tracker@1.0.7
 twbs:bootstrap@3.3.4
 ui@1.0.6

@@ -30,7 +30,7 @@ Meteor.methods({
 	},
 
 	// Chatroom
-	newMessage: function (messageContent) {
+	newMessage: function (messageContent, roomId) {
 		if (! Meteor.userId()) {
 			throw new Meteor.Error('not-authorized', 'user is not logged in');
 		}
@@ -49,17 +49,76 @@ Meteor.methods({
 			username = 'unknown';
 		}
 
-		Chatroom.insert({
+		Messages.insert({
 			message: messageContent,
 			sent: new Date(),
 			user: Meteor.userId(),
-			username: username
+			username: username,
+			roomId: roomId,
 		});
 	},
-	removeMessage: function (messageId) {
-		if(!_.contains(Meteor.user().roles, 'chatMod')) { // not chat moderator
-			throw new Meteor.error('not-authorized', 'user is not a chat moderator');
+	removeMessage: function (messageId, roomId) {
+		if(!Meteor.user()) {
+			// not a user
+			throw new Meteor.Error('not-logged-in', 'not logged in');
 		}
-		Chatroom.remove(messageId);
+		if ( _.contains(Meteor.user().roles, 'admin')  ) {
+			// user is admin
+			Messages.remove(messageId);
+			return true;
+		}
+
+		var userId = Meteor.userId();
+		var curr_rom = Chatrooms.findOne({_id: roomId});  // Get current chatroom
+		moderators = curr_rom.moderators;
+
+		var isMod = moderators.some( function (moderator) { // return true if any of the moderators match the current user
+			return moderator._id == userId;
+		});
+
+		if (isMod) {
+			Messages.remove(messageId);
+		} else {
+			throw new Meteor.Error('not-authorized', 'not a chat moderator');
+		}
+	},
+	createChatroom: function (roomName) {
+
+		if(! Meteor.userId()) {
+			throw new Meteor.Error('not-authorized', 'user is not logged in');
+		}
+
+		if( Chatrooms.findOne({'roomName': roomName}) ) {
+			throw new Meteor.Error('room-exists', 'chatroom with same name exists');
+		} else {
+			Chatrooms.insert({
+				roomName: roomName,
+				users: [],
+				moderators: [
+					Meteor.user(),
+				],
+				createdAt: new Date()
+			});
+		}
+	},
+	addUserToRoom: function (roomId) {
+
+		Chatrooms.upsert(
+			{
+				// Selector
+				_id: roomId
+			},
+			{
+				// Modifier
+				$addToSet: {
+					users: Meteor.user()
+				}
+			}
+		);
+
+	},
+	removeChatroom: function (roomId) {
+		Chatrooms.remove(roomId);
+		Messages.remove({'roomId': roomId});
 	}
 });

@@ -1,28 +1,90 @@
-<template name="chatroom">
+<template name="chatroomHome">
 
 	<article>
 
-		<h1>Chatroom</h1>
+			<h1>Chatroom</h1>
+
+			{{> chatroom }}
+
+	</article>
+
+</template>
+
+
+<template name="chatroom">
+
+		{{!-- This should be an example implementation - the user should have access to all of these templates ( this shown in demo?) --}}
+
+		{{> chatroomList}}
 
 		<div id="chatroom-container">
 
-			<div id="messages">
+			{{> messages }}
 
-				{{#each messages }}
-					{{> message }}
-				{{/each}}
-
-			</div>
-
-			<div class="new-message-container">
-				<form class="new-message">
-					<input name="text" type="text" placeholder="Type your message here" class="form-control" />
-				</form>
-			</div>
+			{{> newMessage }}
 
 		</div>
 
-	</article>
+</template>
+
+
+
+
+<template name="chatroomList">
+
+	<div class="room-name-list">
+
+		{{#each chatrooms}}
+
+			<div class="room-name-list-item {{#if isActive this }}active-room{{/if}}">
+
+				{{#if isModOrAdmin }}
+
+					<a class="remove-room" href="#">
+						<i class="fa fa-remove"></i>
+					</a>
+
+				{{/if}}
+
+				<a class="room-name" href="#">
+					{{ roomName }}
+				</a>
+
+			</div>
+
+		{{/each}}
+
+		{{> newChatroom}}
+
+	</div>
+
+</template>
+
+<template name="newChatroom">
+
+			<div id="new-chatroom-container" class="room-name-list-item">
+
+				<input placeholder="New Room" type="text" class="form-control"/>
+
+				<a href="#">
+					<i class="fa fa-plus"></i>
+				</a>
+
+			</div>
+
+</template>
+
+
+
+<template name="messages">
+
+	<div id="messages">
+
+		{{#each messages }}
+			{{> message }}
+		{{/each}}
+
+	</div>
 
 </template>
 
@@ -30,11 +92,21 @@
 
 	<div class="message">
 		<p>
-			{{#if isModerator }}
+			{{#if isModOrAdmin }}
 				<a class="remove-message" href="#"><i class="fa fa-remove"></i></a>
 			{{/if}}
 			<span class="username">{{ username }}</span>: {{ message }}
 		</p>
+	</div>
+
+</template>
+
+<template name="newMessage">
+
+	<div class="new-message-container">
+		<form class="new-message">
+			<input name="text" type="text" placeholder="Type your message here" class="form-control" />
+		</form>
 	</div>
 
 </template>

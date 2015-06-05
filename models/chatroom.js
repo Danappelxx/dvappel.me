@@ -34,4 +34,6 @@
 
 // Probably going to go with the first method - seems simpler (and more efficient?)
 
-this.Chatroom = new Mongo.Collection('chatroom');
+this.Chatrooms = new Mongo.Collection('chatrooms');
+
+this.Messages = new Mongo.Collection('messages');
