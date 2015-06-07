@@ -1,0 +1,31 @@
+#todolists-container {
+
+	$border-color: #EEE;
+
+	text-align: center;
+	width: 60%;
+	overflow: auto;
+	white-space: nowrap;
+	margin: 0 auto;
+	border: 1px solid $border-color;
+
+	.todolist-container {
+
+		display: inline-block;
+		border-right: 1px solid $border-color;
+		padding: 5px;
+
+		&:last-child {
+			border: none;
+		}
+
+		a {
+			color: #333;
+		}
+
+		p {
+			display: inline-block;
+		}
+
+	}
+}

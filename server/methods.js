@@ -120,5 +120,49 @@ Meteor.methods({
 	removeChatroom: function (roomId) {
 		Chatrooms.remove(roomId);
 		Messages.remove({'roomId': roomId});
+	},
+
+	// Tasks
+	newTask: function (itemContent, isList, that) {
+
+		var listId = null;
+		if ( isList ) {
+			listId = new Meteor.Collection.ObjectID()._str;
+			Todolists.insert({
+				_id: listId,
+				listName: itemContent,
+				fatherId: that._id,
+				hasFather: true,
+				items: [],
+			});
+		}
+
+		Todolists.update( that._id,
+			{
+				$push: {
+					items: {
+						_id: new Meteor.Collection.ObjectID()._str,
+						isList: isList,
+						listId: listId,
+						content: itemContent,
+						parentId: that._id,
+					},
+				}
+			}
+		);
+	},
+	removeTask: function (that) {
+		if (that.isList) {
+			Todolists.remove(that.listId);
+		}
+		Todolists.update( that.parentId,
+			{
+				$pull: {
+					items: {
+						_id: that._id
+					}
+				}
+			}
+		);
 	}
 });

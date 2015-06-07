@@ -72,4 +72,10 @@ Router.map(function () {
 		path: '/chatroom',
 		template: 'chatroom'
 	});
+
+	// Todolists
+	this.route('todolists', {
+		path: '/todolists',
+		template: 'todolists',
+	});
 });
