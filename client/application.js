@@ -6,3 +6,5 @@ Meteor.startup( function () {
 Meteor.subscribe('chatrooms');
 
 Meteor.subscribe('messages');
+
+Meteor.subscribe('todolists');

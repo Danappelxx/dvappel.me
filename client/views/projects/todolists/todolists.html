@@ -1,0 +1,93 @@
+<template name="todolists">
+
+	<div id="todolists-container">
+
+		{{#each todolists }}
+			{{>todolist }}
+		{{/each }}
+
+	</div>
+
+</template>
+
+<template name="todolist">
+
+	<div class="todolist-container">
+
+		<h1>
+			{{ listName }}
+		</h1>
+
+		{{>newTask }}
+
+		<hr>
+
+		{{#each items }}
+
+			<div class="todolist-item">
+
+				{{> todolistItem }}
+
+			</div>
+
+		{{/each }}
+
+	</div>
+
+</template>
+
+<template name="newTask">
+
+	<form class="new-task">
+
+		<input type="text" name="text" placeholder="New Task" />
+		<input type="checkbox" name="checkbox" />
+		{{!-- Needs a tooltip --}}
+
+	</form>
+
+</template>
+
+<template name="todolistItem">
+
+{{!-- 	{{#if isList }}
+		<p>
+			it's a list
+		</p>
+	{{else}}
+		<p>
+			it's not a list
+		</p>
+	{{/if}}
+ --}}
+
+ 	<a href="#" class="new-task">
+ 		<i class="fa fa-remove"></i>
+ 	</a>
+
+
+ 	{{#if isList}}
+
+ 	<a href="#" class="select-list">
+		<p>
+			{{ content }}
+		</p>
+ 	</a>
+ 	{{else}}
+ 		<p>
+ 			{{ content }}
+ 		</p>
+
+ 	{{/if}}
+
+{{!-- 	{{#if hasFather }}
+		<p>
+			I have a father!
+		</p>
+	{{else}}
+		<p>
+			I don't have a father!
+		</p>
+	{{/if}} --}}
+
+</template>

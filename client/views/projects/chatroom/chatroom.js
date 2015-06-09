@@ -6,12 +6,12 @@
 
 // Messages
 Controller('messages', {
-  helpers: {
-	messages: function () {
-		var currRoomId = Session.get('currRoom');
-		return Messages.find({'roomId': currRoomId});
+	helpers: {
+		messages: function () {
+			var currRoomId = Session.get('currRoom');
+			return Messages.find({'roomId': currRoomId});
+		},
 	},
-  },
 });
 
 // Message
