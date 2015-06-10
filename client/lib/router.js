@@ -15,13 +15,16 @@ Router.map(function () {
 		path: '/'
 	});
 	this.route('projects', {
-		path: '/projects'
+		path: '/projects',
+		template: 'projects'
 	});
 	this.route('about', {
-		path: '/about'
+		path: '/about',
+		template: 'about-page'
 	});
 	this.route('contact', {
-		path: '/contact'
+		path: '/contact',
+		template: 'contact-page'
 	});
 	this.route('admin', {
 		path: '/admin',
@@ -84,7 +87,7 @@ Router.map(function () {
 	// Games
 	this.route('games', {
 		path: '/games',
-		template: 'games'
+		template: 'games-page'
 	});
 
 	this.route('flappy-square', {
