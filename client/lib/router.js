@@ -78,4 +78,17 @@ Router.map(function () {
 		path: '/todolists',
 		template: 'todolists',
 	});
+
+
+
+	// Games
+	this.route('games', {
+		path: '/games',
+		template: 'games'
+	});
+
+	this.route('flappy-square', {
+		path: '/flappy',
+		template: 'flappy-square'
+	});
 });
