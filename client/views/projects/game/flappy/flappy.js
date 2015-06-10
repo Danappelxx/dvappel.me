@@ -1,4 +1,4 @@
-Template['flappy-square'].rendered = function () {
+Template.flappySquare.rendered = function () {
 
 	var flappyContainer = document.getElementById("flappy-container");
 

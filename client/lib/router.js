@@ -90,8 +90,8 @@ Router.map(function () {
 		template: 'games-page'
 	});
 
-	this.route('flappy-square', {
+	this.route('flappySquare', {
 		path: '/flappy',
-		template: 'flappy-square'
+		template: 'flappySquare'
 	});
 });
