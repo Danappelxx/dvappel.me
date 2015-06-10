@@ -58,24 +58,25 @@ Controller('todolistItem', {
 
 			var currStack = Session.get('currTodolistStack');
 
-			var haveSameParent = function(arr) {
-				var haveSame = false;
-				arr.forEach( function(element, index, arr2) {
-					arr2.forEach( function (element2, index2, arr3) {
-						if (element.parentId === element2.parentId) {
-							haveSame = true;
-						}
-					})
-				});
-				return haveSame;
-			}
+			console.log(currStack);
 
-			if(! currStack || haveSameParent(currStack)) {
-				currStack = [];
-				currStack.push(Todolists.findOne( self.parentId ));
-			}
 
-			currStack.push( Todolists.findOne( self.listId ));
+			currStack = [];
+
+			var addParentToStack = function (parent) {
+				currStack.unshift(parent);
+
+				if(parent.hasFather) {
+					addParentToStack( Todolists.findOne({'_id': parent.fatherId}) );
+				}
+			};
+
+
+			addParentToStack( Todolists.findOne(self.listId) );
+
+			console.log(currStack);
+			// currStack.unshit();
+
 
 			Session.set('currTodolistStack', currStack);
 
