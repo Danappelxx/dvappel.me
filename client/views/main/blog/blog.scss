@@ -1,0 +1,29 @@
+@import "../../../stylesheets/var/variables";
+
+#blog-index-container {
+
+	margin-top: 20px;
+	text-align: left;
+	$byline-text-color: #bbb;
+
+	a {
+		font-size: 2em;
+	}
+	div {
+		width: 40%;
+		margin: 0 auto;
+	}
+
+	.blog-by-line {
+		color: $byline-text-color;
+		font-size: 1em;
+		margin-bottom: 10px;
+	}
+
+}
+
+#blogIndexSection {
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
+}

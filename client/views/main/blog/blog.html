@@ -1,6 +1,47 @@
+<template name="homeBlogIndexTemplate">
+
+	<section id="blogIndexSection">
+		<h1>Blog</h1>
+		<hr>
+		{{> blogIndexTemplate }}
+	</section>
+
+</template>
+
 <template name="blogIndexTemplate">
 
-	{{> blogIndex}}
+	<div id="blog-index-container">
+
+		{{#each posts}}
+
+			{{> blogIndexPost }}
+
+		{{/each }}
+
+	</div>
+
+</template>
+
+<template name="blogIndexPost">
+
+	<div>
+		<a href="{{buildUrl slug}}" class="blogPostTitle">{{ title }}</a>
+	</div>
+
+
+	<div class="blog-by-line-container">
+		<p class="blog-by-line">{{ beautifyTime publishedAt }}</p>
+	</div>
+
+	<div class="excerpt-container">
+		<p class="blog-excerpt">
+			{{ excerpt }}
+		</p>
+	</div>
+
+	<div>
+		<hr>
+	</div>
 
 </template>
 

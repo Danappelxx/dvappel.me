@@ -12,7 +12,16 @@ Router.map(function () {
 
 	// Base site
 	this.route('home', {
-		path: '/'
+		path: '/',
+		data: function () {
+			return {
+				posts: Post.where({}, {
+					sort: {
+						publishedAt: -1
+					}
+				})
+			};
+		},
 	});
 	this.route('projects', {
 		path: '/projects',
