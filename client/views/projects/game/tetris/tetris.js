@@ -25,7 +25,7 @@ Template.tetris.rendered = function () {
 					blank: 'whitesmoke',
 					filled: '#E5837C',
 				},
-				gameSpeed: 10,// in seconds
+				gameSpeed: 1,// in seconds
 			};
 			this.timeSinceMoved = 0;
 
@@ -41,6 +41,7 @@ Template.tetris.rendered = function () {
 					HIDDEN: 0,
 					BLANK: 1,
 					FILLED: 2,
+					WHITESPACE: 3, // the empty area of the 4x4 of the tetris block - ignore it in collision detection
 				},
 				levelMap: null, // LEVEL ARRAY IS Y,X INSTEAD OF X,Y FOR SIMPLICITY (OOPS)
 				cellSpacingRatio: 0.1,
@@ -79,13 +80,19 @@ Template.tetris.rendered = function () {
 			////////////////////////////////////
 			this.level.generateBlankLevel = function (width, height, blankVal) {
 
-					var blankRow = Array.apply(null, new Array(width)).map( Number.prototype.valueOf, blankVal);
-					// creates an array with values of blankVal of size width
+				// elegant solution didn't work because arrays were somehow linked
 
-				    var levelArr = Array.apply(null, new Array(height)).map( Array.prototype.valueOf, blankRow );
-				    // creates an array with values of blankRow (array of blankVal's) of size height
+				var levelArr = [];
 
-				    that.level.levelMap = levelArr; // use 'that' because otherwise is in function scope
+				for (var i = 0; i < height; i++) {
+					levelArr[i] = [];
+
+					for( var j = 0; j < width; j++ ) {
+						levelArr[i].push(blankVal);
+					}
+				}
+
+				that.level.levelMap = levelArr; // use 'that' because otherwise is in function scope
 			};
 
 			this.level.generateBlankLevel(this.level.horizontal, this.level.vertical, this.level.enum.BLANK);
@@ -93,6 +100,7 @@ Template.tetris.rendered = function () {
 			////////////////////////////////////////////////////////////////////////
 			////////////////////		Render level 			////////////////////
 			////////////////////////////////////////////////////////////////////////
+
 			this.level.renderLevel = function () {
 				var level = that.level.levelMap;
 
@@ -160,6 +168,7 @@ Template.tetris.rendered = function () {
 
 				var blank = that.level.enum.BLANK;
 				var filled = that.level.enum.FILLED;
+				var whitespace = that.level.enum.WHITESPACE;
 
 				var drawSunkenShapes = function () {
 
@@ -170,8 +179,32 @@ Template.tetris.rendered = function () {
 
 					var startingX = currentShape.x;
 					var startingY = currentShape.y;
+					var endingX = currentShape.x + currentShape.width;
+					var endingY = currentShape.y + currentShape.height;
 
-					that.level.levelMap[startingY][startingX] = filled;
+					console.log(startingX, endingX, startingY, endingY);
+
+					var diffY, diffX;
+					for ( var i = startingY; i < endingY; i++) {
+
+						diffY = endingY - i - 1;
+						for ( var j = startingX; j < endingX; j++) {
+
+							diffX = endingX - j - 1;
+							if (currentShape.structure[diffY][diffX] === blank) {
+								level[i][j] = whitespace;
+							}
+							if (currentShape.structure[diffY][diffX] === filled) {
+								level[i][j] = filled;
+							}
+							// console.log(diffY, diffX);
+
+							// level[i][j] = filled;
+						}
+					}
+
+					// console.log(level[0]);
+					// level[startingY][4] = filled;
 
 				};
 				drawCurrentShape();
@@ -227,13 +260,11 @@ Template.tetris.rendered = function () {
 				var currentShape = shapeTypes[shapeTypeNum];
 
 				currentShape = _.extend(currentShape, {
-					x: randInt(0, that.level.horizontal - 1),
+					x: randInt(0, that.level.horizontal - currentShape.width - 1),
 					y: 0,
 				});
 
 				that.shape.currentShape = currentShape;
-
-				console.log(currentShape);
 			};
 
 			////////////////////////////////////
@@ -241,9 +272,7 @@ Template.tetris.rendered = function () {
 			////////////////////////////////////
 
 			this.shape.moveDown = function () {
-				that.shape.currentShape.y++;
-				that.level.reDrawLevel();
-				// console.log(that.shape.currentShape.y, that.shape);
+				that.shape.currentShape.y += 1;
 			};
 
 			////////////////////////////////////
@@ -254,10 +283,10 @@ Template.tetris.rendered = function () {
 			this.shape.shapeTypes = [
 				{
 					width: 4,
-					height: 1,
+					height: 4,
 					lowestPoint: 4,
 					highestPoint: 4,
-					structure :[
+					structure: [
 						[b,b,b,b],  // O O O O
 						[b,b,b,b],  // O O O O
 						[b,b,b,b],  // O O O O
