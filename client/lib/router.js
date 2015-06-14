@@ -98,9 +98,11 @@ Router.map(function () {
 		path: '/games',
 		template: 'games-page'
 	});
-
-	this.route('flappySquare', {
-		path: '/flappy',
-		template: 'flappySquare'
+	this.route('game', {
+		path: '/games/:gameName',
+		template: 'games-page',
+		onAfterAction: function () {
+			this.render(this.params.gameName);
+		}
 	});
 });
