@@ -9,12 +9,16 @@ Controller('blogIndexPost', {
 		}
 	},
 	rendered: function () {
-		document.title = 'Dan Appel | ' + document.title;
+		if ( window.location.pathname === '/blog') {
+			document.title = 'Dan Appel | ' + 'Blog';
+		}
 	},
 });
 
 Controller('showBlogTemplate', {
 	rendered: function () {
-		document.title = 'Dan Appel | ' + document.title;
+		if ( window.location.pathname !== '/') {
+			document.title = 'Dan Appel | ' + document.title;
+		}
 	},
 });
