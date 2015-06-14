@@ -1,10 +1,10 @@
 <template name="homeBlogIndexTemplate">
 
-	<section id="blogIndexSection">
+	<article id="blogIndexSection">
 		<h1>Blog</h1>
 		<hr>
 		{{> blogIndexTemplate }}
-	</section>
+	</article>
 
 </template>
 
@@ -24,7 +24,7 @@
 
 <template name="blogIndexPost">
 
-	<div>
+	<div class="blog-anchor-container">
 		<a href="{{buildUrl slug}}" class="blogPostTitle">{{ title }}</a>
 	</div>
 
