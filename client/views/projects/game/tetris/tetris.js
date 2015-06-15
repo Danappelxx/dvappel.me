@@ -26,8 +26,13 @@ Template.tetris.rendered = function () {
 					filled: '#E5837C',
 				},
 				gameSpeed: 1,// in seconds
+				sideMoveDelay: 0.1, // in seconds
+				downMoveDelay: 0.1, // in seconds
 			};
-			this.timeSinceMoved = 0;
+			this.timeSinceMovedDown = 0;
+
+			this.timeSincePlayerMovedDown = 0;
+			this.timeSincePlayerMovedSide = 0;
 
 			////////////////////////////////////////////////////////////////////////
 			////////////////////	Construct level properties 	////////////////////
@@ -35,8 +40,8 @@ Template.tetris.rendered = function () {
 
 			this.level = {
 				horizontal: 10,
-				vertical: 24,
-				hidden: 4,
+				vertical: 20,
+				hidden: 1,
 				enum: {
 					HIDDEN: 0,
 					BLANK: 1,
@@ -132,10 +137,10 @@ Template.tetris.rendered = function () {
 
 					row.forEach( function (cell, arrX, rowArr) {
 
-						if ( cell === blank) {
+						if ( cell === blank ) {
 							that.layer.fillStyle(blankColor);
 						}
-						if ( cell === filled) {
+						if ( cell === filled ) {
 							that.layer.fillStyle(fillColor);
 						}
 
@@ -159,55 +164,51 @@ Template.tetris.rendered = function () {
 
 			this.level.reDrawLevel = function () {
 
-				// var level = that.level.levelMap;
-
 				that.level.generateBlankLevel(that.level.horizontal, that.level.vertical, that.level.enum.BLANK);
 				// draw from scratch
 
 				var level = that.level.levelMap;
+				var levelHeight = that.level.vertical;
 
 				var blank = that.level.enum.BLANK;
 				var filled = that.level.enum.FILLED;
 				var whitespace = that.level.enum.WHITESPACE;
 
 				var drawSunkenShapes = function () {
+					var sunkShapes = that.shape.sunkShapes;
 
+					sunkShapes.forEach( function (currentShape) {
+						drawCurrentShape(currentShape);
+					});
 				};
 
-				var drawCurrentShape = function () {
-					var currentShape = that.shape.currentShape;
-
+				var drawCurrentShape = function (currentShape) {
+					// console.log(currentShape);
 					var startingX = currentShape.x;
 					var startingY = currentShape.y;
 					var endingX = currentShape.x + currentShape.width;
 					var endingY = currentShape.y + currentShape.height;
 
-					console.log(startingX, endingX, startingY, endingY);
-
 					var diffY, diffX;
-					for ( var i = startingY; i < endingY; i++) {
+					for ( var y = startingY; y < endingY; y++) {
 
-						diffY = endingY - i - 1;
-						for ( var j = startingX; j < endingX; j++) {
+						diffY = y - startingY;
+						for ( var x = startingX; x < endingX; x++) {
 
-							diffX = endingX - j - 1;
-							if (currentShape.structure[diffY][diffX] === blank) {
-								level[i][j] = whitespace;
-							}
+							diffX = x - startingX;
+
 							if (currentShape.structure[diffY][diffX] === filled) {
-								level[i][j] = filled;
+								level[y][x] = filled;
 							}
-							// console.log(diffY, diffX);
-
-							// level[i][j] = filled;
 						}
 					}
-
-					// console.log(level[0]);
-					// level[startingY][4] = filled;
-
 				};
-				drawCurrentShape();
+
+				drawSunkenShapes();
+
+				if ( that.shape.currentShape ) {
+					drawCurrentShape(that.shape.currentShape);
+				}
 
 			};
 
@@ -239,7 +240,8 @@ Template.tetris.rendered = function () {
 				currentShape: null,
 				addShape: null,
 				moveDown: null,
-				sunkShapes: null,
+				checkSink: null,
+				sunkShapes: [],
 				rotateShape: null,
 			};
 
@@ -260,7 +262,7 @@ Template.tetris.rendered = function () {
 				var currentShape = shapeTypes[shapeTypeNum];
 
 				currentShape = _.extend(currentShape, {
-					x: randInt(0, that.level.horizontal - currentShape.width - 1),
+					x: randInt(0, that.level.horizontal - currentShape.width),
 					y: 0,
 				});
 
@@ -268,11 +270,43 @@ Template.tetris.rendered = function () {
 			};
 
 			////////////////////////////////////
-			//	Move shape down		 	   	  //
+			//	Check if shape should be sunk //
+			////////////////////////////////////
+
+			this.shape.checkSink = function () {
+
+				var levelHeight = that.level.vertical;
+				var lowestY = that.shape.currentShape.lowestPointY;
+				var currY = that.shape.currentShape.y;
+				var collisionPoint = lowestY + currY; //// +1 to adjust offset (since it's an array index)
+
+
+				if ( collisionPoint === levelHeight ) {
+					that.shape.sunkShapes.push(that.shape.currentShape);
+					that.shape.currentShape = null;
+					// that.shape.addShape();
+
+					console.log(that.shape.sunkShapes);
+				}
+			};
+
+			////////////////////////////////////
+			//	Shape movement		 	   	  //
 			////////////////////////////////////
 
 			this.shape.moveDown = function () {
 				that.shape.currentShape.y += 1;
+				console.log('current y:', that.shape.currentShape.y);
+
+				that.shape.checkSink();
+			};
+
+			this.shape.moveLeft = function () {
+				that.shape.currentShape.x -= 1;
+			};
+
+			this.shape.moveRight = function () {
+				that.shape.currentShape.x += 1;
 			};
 
 			////////////////////////////////////
@@ -280,17 +314,18 @@ Template.tetris.rendered = function () {
 			////////////////////////////////////
 			var b = this.level.enum.BLANK;
 			var f = this.level.enum.FILLED;
+			var w = this.level.enum.WHITESPACE;
 			this.shape.shapeTypes = [
 				{
-					width: 4,
-					height: 4,
-					lowestPoint: 4,
-					highestPoint: 4,
+					width: 5,
+					height: 5,
+					lowestPointY: 2,
 					structure: [
-						[b,b,b,b],  // O O O O
-						[b,b,b,b],  // O O O O
-						[b,b,b,b],  // O O O O
-						[f,f,f,f],	// X X X X
+						[w,w,w,w,w],	// O O O O O
+						[w,w,f,w,w],	// O O X O O
+						[w,f,f,f,w],	// O X X X O
+						[w,w,w,w,w],	// O O O O O
+						[w,w,w,w,w],	// O O O O O
 					]
 				},
 				// ...
@@ -304,7 +339,6 @@ Template.tetris.rendered = function () {
 			// End shape properties
 
 			console.log(this.level, this.shape);
-
 		},
 
 		ready: function () {
@@ -315,17 +349,45 @@ Template.tetris.rendered = function () {
 
 			var that = this;
 
-			this.timeSinceMoved += dt;
+			this.timeSinceMovedDown += dt;
+			this.timeSincePlayerMovedSide += dt;
+			this.timeSincePlayerMovedDown += dt;
 
 			if (!this.shape.currentShape) {
 				this.shape.addShape();
 			}
 
-			if ( this.timeSinceMoved >= this.settings.gameSpeed ) {
-				this.timeSinceMoved = 0;
+			if ( this.timeSinceMovedDown >= this.settings.gameSpeed ) {
+				this.timeSinceMovedDown = 0;
 				this.shape.moveDown();
-				this.level.reDrawLevel();
 			}
+
+
+			// keypress detection
+
+			if ( this.timeSincePlayerMovedDown > this.settings.downMoveDelay ) {
+				if ( this.keyboard.keys.space || this.keyboard.keys.down ) {
+					that.shape.moveDown();
+				}
+
+				this.timeSincePlayerMovedDown = 0;
+			}
+
+			if ( this.timeSincePlayerMovedSide > this.settings.sideMoveDelay ) {
+
+
+				if ( this.keyboard.keys.left ) {
+					that.shape.moveLeft();
+				}
+				if ( this.keyboard.keys.right ) {
+					that.shape.moveRight();
+				}
+
+				this.timeSincePlayerMovedSide = 0;
+			}
+
+
+			this.level.reDrawLevel(); // optional - just to smoothen things
 
 		},
 
@@ -347,13 +409,20 @@ Template.tetris.rendered = function () {
 
 		},
 
-		keydown: function (event) {
+		// keydown: function (event) {
 
-			var that = this;
+		// 	var that = this;
 
-			if (event.key === 'space') {
+		// 	if ( event.key === 'space' ) {
 
-			}
-		}
+		// 	}
+		// 	if ( event.key === 'left' ) {
+		// 		that.shape.moveLeft();
+		// 	}
+
+		// 	if ( event.key === 'right' ) {
+		// 		that.shape.moveRight();
+		// 	}
+		// }
 	});
 };
