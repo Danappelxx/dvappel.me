@@ -23,7 +23,7 @@ Blog.config({
 	blogShowTemplate: 'showBlogTemplate',
 	blogNotFoundTemplate: 'notFound',
 	syntaxHighlighting: true,
-	syntaxHighlightingTheme: 'github',
+	syntaxHighlightingTheme: 'zenburn',
 	adminRole: 'blogAdmin',
 	authorRole: 'blogAuthor',
 });
