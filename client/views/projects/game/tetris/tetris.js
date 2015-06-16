@@ -23,9 +23,9 @@ Template.tetris.rendered = function () {
 				},
 				fillStyle: {
 					blank: 'whitesmoke',
-					filled: '#E5837C',
+					filled: ['#E5837C'],
 				},
-				gameSpeed: 1,// in seconds
+				gameSpeed: 5,// in seconds
 				sideMoveDelay: 0.1, // in seconds
 				downMoveDelay: 0.1, // in seconds
 			};
@@ -48,9 +48,23 @@ Template.tetris.rendered = function () {
 					FILLED: 2,
 					WHITESPACE: 3, // the empty area of the 4x4 of the tetris block - ignore it in collision detection
 				},
+
+				// null means that it is defined later
 				levelMap: null, // LEVEL ARRAY IS Y,X INSTEAD OF X,Y FOR SIMPLICITY (OOPS)
+				generateBlankLevel: null,
+				renderLevel: null,
+				reDrawLevel: null,
+				checkRows: null,
+
 				cellSpacingRatio: 0.1,
-				// more added below
+				cellWidth: null,
+				cellHeight: null,
+				cellSpacing: null,
+				totalCellWidth: null,
+				totalCellHeight: null,
+				sidePadding: null,
+				startingX: null,
+				startingY: null,
 			};
 
 			////////////////////////////////////
@@ -100,7 +114,7 @@ Template.tetris.rendered = function () {
 				that.level.levelMap = levelArr; // use 'that' because otherwise is in function scope
 			};
 
-			this.level.generateBlankLevel(this.level.horizontal, this.level.vertical, this.level.enum.BLANK);
+			this.level.generateBlankLevel(this.level.horizontal, this.level.vertical, this.level.enum.BLANK); // generate starter level
 
 			////////////////////////////////////////////////////////////////////////
 			////////////////////		Render level 			////////////////////
@@ -128,7 +142,7 @@ Template.tetris.rendered = function () {
 				var filled = that.level.enum.FILLED;
 
 				var blankColor = that.settings.fillStyle.blank;
-				var fillColor = that.settings.fillStyle.filled;
+				var fillColor = that.settings.fillStyle.filled[0];
 
 				var currCell;
 				level.forEach( function (row, arrY, levelArr) {
@@ -177,6 +191,8 @@ Template.tetris.rendered = function () {
 				var drawSunkenShapes = function () {
 					var sunkShapes = that.shape.sunkShapes;
 
+					Session.set('sunkShapes', sunkShapes);
+					Session.set('currentShape', that.shape.currentShape);
 					sunkShapes.forEach( function (currentShape) {
 						drawCurrentShape(currentShape);
 					});
@@ -197,8 +213,10 @@ Template.tetris.rendered = function () {
 
 							diffX = x - startingX;
 
-							if (currentShape.structure[diffY][diffX] === filled) {
-								level[y][x] = filled;
+							if (level[y]) {
+								if (currentShape.structure[diffY][diffX] === filled) {
+									level[y][x] = filled;
+								}
 							}
 						}
 					}
@@ -218,11 +236,39 @@ Template.tetris.rendered = function () {
 
 			this.level.checkRows = function () {
 
+				var level = that.level.levelMap;
+				var filled = that.level.enum.FILLED;
+				var blank = that.level.enum.BLANK;
+
+				level.forEach( function (row, y) {
+
+					var rowIsFull = row.every( function (cell, x) { // if all cells of roware filled...
+						if ( cell === filled ) {
+							return true;
+						}
+					});
+
+					if ( rowIsFull ) {
+						row.forEach( function (cell, index) { // clear all cells of row
+							row[index] = blank;
+						});
+						that.shape.sunkShapes.sort( function (a,b) { return a.y < b.y; }).forEach( function (shape, index) { // move all shapes down
+							shape.y++;
+						});
+					}
+
+				});
+
+
+			};
+
+			this.level.shiftLevelDown = function () {
+
 			};
 
 			////////////////////////////////////////////////////////////////////////
 			////////////////////////////////////////////////////////////////////////
-			// End collision check
+			// End checking for full rows, shifting level down
 
 			////////////////////////////////////////////////////////////////////////
 			////////////////////////////////////////////////////////////////////////
@@ -262,8 +308,10 @@ Template.tetris.rendered = function () {
 				var currentShape = shapeTypes[shapeTypeNum];
 
 				currentShape = _.extend(currentShape, {
-					x: randInt(0, that.level.horizontal - currentShape.width),
-					y: 0,
+					x: randInt(0, that.level.horizontal - currentShape.width) + currentShape.firstPointY - 1,
+					y: 0 - currentShape.lastPointY,
+					checkSink: checkSink,
+					sink: sinkShape,
 				});
 
 				that.shape.currentShape = currentShape;
@@ -273,21 +321,86 @@ Template.tetris.rendered = function () {
 			//	Check if shape should be sunk //
 			////////////////////////////////////
 
-			this.shape.checkSink = function () {
+			var checkSink = function () {
 
-				var levelHeight = that.level.vertical;
-				var lowestY = that.shape.currentShape.lowestPointY;
+				var level = that.level;
+				var levelMap = level.levelMap;
+				var levelHeight = level.vertical - 1; // - 1 because it is an array length
+				var lowestY = that.shape.currentShape.lastPointY;
 				var currY = that.shape.currentShape.y;
-				var collisionPoint = lowestY + currY; //// +1 to adjust offset (since it's an array index)
+				var currX = that.shape.currentShape.x;
+				var shapeWidth = that.shape.currentShape.width;
+				var collisionPointY = lowestY + currY;
 
+				var structureY = collisionPointY - currY;
 
-				if ( collisionPoint === levelHeight ) {
-					that.shape.sunkShapes.push(that.shape.currentShape);
-					that.shape.currentShape = null;
-					// that.shape.addShape();
+				var filled = that.level.enum.FILLED;
 
-					console.log(that.shape.sunkShapes);
+				console.log('coordinates:', currX, currY);
+				console.log('level map:');
+				console.log(levelMap[collisionPointY - 2]);
+				console.log(levelMap[collisionPointY - 1]);
+				console.log(levelMap[collisionPointY    ]);
+				console.log(levelMap[collisionPointY + 1]);
+
+				// console.log(that.shape.currentShape.structure[structureY]);
+				// console.log(currX - 1, that.shape.currentShape.structure[structureY][shapeWidth - currX]);
+				// console.log(currX, shapeWidth);
+
+				// is at bottom
+				if ( collisionPointY === levelHeight) {
+					that.shape.currentShape.sink();
+					that.level.checkRows(); // checks each row, then if full then clears it
 				}
+				else {
+
+					console.log('structure:');
+
+					that.shape.currentShape.structure.forEach( function (row, shapeX, structure) {
+
+						row.forEach( function (cell, shapeY, structureRow) {
+							// ...
+						});
+
+						console.log(row);
+
+					}) ;
+
+
+				// 	for ( var x = currX; x < shapeWidth; x++ ) {
+
+				// 		var structureX = x - currX;
+
+				// 		if ( levelMap[collisionPointY + 1][x] === filled && // spot below is filled
+				// 			that.shape.currentShape.structure[structureY][structureX] === filled) { // spot is filled
+
+				// 				that.shape.currentShape.sink();
+				// 				console.log('collision');
+				// 		}
+				// 	}
+				// 	that.level.checkRows(); // checks each row, then if full then clears it
+				// }
+
+				// How this works:
+				// 1. loop through the shape's structure
+				// 2. in the loop, also find the corresponding coordinates on the level map
+				// 3. if current cell in shape is filled, look ONE cell below said cell on the LEVEL MAP
+				// 4. if said cell (the one below the current cell) is also filled, sink the shape
+				// 5. repeat for all cells in the shape's structure
+
+				}
+				console.log('\n\n');
+			};
+
+			////////////////////////////////////
+			//	Sink shape                    //
+			////////////////////////////////////
+
+			// gets bound to currentShape
+			var sinkShape = function () {
+				var currentShapeCopy = $.extend(true, {}, that.shape.currentShape); // jquery for deep copy
+				that.shape.sunkShapes.push(currentShapeCopy); // sink the current shape
+				that.shape.currentShape = null; // remove the current shape (it will get added in 'step')
 			};
 
 			////////////////////////////////////
@@ -298,15 +411,25 @@ Template.tetris.rendered = function () {
 				that.shape.currentShape.y += 1;
 				console.log('current y:', that.shape.currentShape.y);
 
-				that.shape.checkSink();
+				that.shape.currentShape.checkSink();
 			};
 
 			this.shape.moveLeft = function () {
-				that.shape.currentShape.x -= 1;
+				// check that moving it to the left won't move it off screen
+				if ( that.shape.currentShape.x - 1 > ( 0 - that.shape.currentShape.firstPointX ) ) {
+					that.shape.currentShape.x -= 1;
+				} else {
+					// play blocking sound
+				}
 			};
 
 			this.shape.moveRight = function () {
-				that.shape.currentShape.x += 1;
+				// check that moving it to the right won't move it off screen
+				if ( that.shape.currentShape.x + 1 < ( that.level.horizontal - that.shape.currentShape.firstPointX ) - 1 ) {
+					that.shape.currentShape.x += 1;
+				} else {
+					// play blocking sound
+				}
 			};
 
 			////////////////////////////////////
@@ -319,7 +442,12 @@ Template.tetris.rendered = function () {
 				{
 					width: 5,
 					height: 5,
-					lowestPointY: 2,
+
+					firstPointY: 2,
+					firstPointX: 2,
+					lastPointY: 2,
+					lastPointX: 4,
+
 					structure: [
 						[w,w,w,w,w],	// O O O O O
 						[w,w,f,w,w],	// O O X O O
@@ -328,6 +456,23 @@ Template.tetris.rendered = function () {
 						[w,w,w,w,w],	// O O O O O
 					]
 				},
+				// {
+				// 	width: 5,
+				// 	height: 5,
+
+				// 	firstPointY: 3,
+				// 	firstPointX: 1,
+				// 	lastPointY: 3,
+				// 	lastPointX: 5,
+
+				// 	structure: [
+				// 		[w,w,w,w,w],	// O O O O O
+				// 		[w,w,w,w,w],	// O O O O O
+				// 		[f,f,f,f,f],	// X X X X X
+				// 		[w,w,w,w,w],	// O O O O O
+				// 		[w,w,w,w,w],	// O O O O O
+				// 	]
+				// },
 				// ...
 			];
 			////////////////////////////////////
@@ -387,8 +532,7 @@ Template.tetris.rendered = function () {
 			}
 
 
-			this.level.reDrawLevel(); // optional - just to smoothen things
-
+			this.level.reDrawLevel(); // clears the level, then fills in the level map with shapes
 		},
 
 		render: function (dt) {
