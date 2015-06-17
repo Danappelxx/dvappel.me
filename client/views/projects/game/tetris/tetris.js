@@ -18,10 +18,10 @@ Template.tetris.rendered = function () {
 
 			this.settings = {
 				padding: {
-					format: 'percent',
-					value: 0.1, // top, bottom TODO: make them seperate
+					value: 0.1, // percent
 				},
 				fillStyle: {
+					background: '#333',
 					blank: 'whitesmoke',
 					filled: ['#E5837C'],
 				},
@@ -29,6 +29,7 @@ Template.tetris.rendered = function () {
 				sideMoveDelay: 0.1, // in seconds
 				downMoveDelay: 0.1, // in seconds
 			};
+
 			this.timeSinceMovedDown = 0;
 
 			this.timeSincePlayerMovedDown = 0;
@@ -539,7 +540,7 @@ Template.tetris.rendered = function () {
 
 			var that = this;
 
-			this.layer.clear('#333');
+			this.layer.clear(this.settings.fillStyle.background);
 
 			this.level.renderLevel();
 
