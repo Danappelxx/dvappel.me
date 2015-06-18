@@ -13,7 +13,7 @@ Template.tetris.rendered = function () {
 			var that = this;
 
 			////////////////////////////////////
-			//	Game settings 				  //
+			//  Game settings                 //
 			////////////////////////////////////
 
 			this.settings = {
@@ -36,7 +36,7 @@ Template.tetris.rendered = function () {
 			this.timeSincePlayerMovedSide = 0;
 
 			////////////////////////////////////////////////////////////////////////
-			////////////////////	Construct level properties 	////////////////////
+			////////////////////   Construct level properties   ////////////////////
 			////////////////////////////////////////////////////////////////////////
 
 			this.level = {
@@ -69,7 +69,7 @@ Template.tetris.rendered = function () {
 			};
 
 			////////////////////////////////////
-			//	Calculate cell properties     //
+			//  Calculate cell properties     //
 			////////////////////////////////////
 			var width = that.width;
 			var height = that.height;
@@ -96,20 +96,16 @@ Template.tetris.rendered = function () {
 			// point at which level rendering starts vertically, makes it so that the topmost blocks are hidden
 
 			////////////////////////////////////
-			//	Generate a blank level 	      //
+			//  Generate a blank level        //
 			////////////////////////////////////
 			this.level.generateBlankLevel = function (width, height, blankVal) {
 
-				// elegant solution didn't work because arrays were somehow linked
+				var blankRow = Array.apply(null, new Array(width)).map( Number.prototype.valueOf, blankVal);
+				// create an array with values of blankVal of size width
 
 				var levelArr = [];
-
-				for (var i = 0; i < height; i++) {
-					levelArr[i] = [];
-
-					for( var j = 0; j < width; j++ ) {
-						levelArr[i].push(blankVal);
-					}
+				while(height--) {
+					levelArr.push( blankRow.slice() ); // clone blankArray into levelArr ( clone width height many times )
 				}
 
 				that.level.levelMap = levelArr; // use 'that' because otherwise is in function scope
@@ -118,7 +114,7 @@ Template.tetris.rendered = function () {
 			this.level.generateBlankLevel(this.level.horizontal, this.level.vertical, this.level.enum.BLANK); // generate starter level
 
 			////////////////////////////////////////////////////////////////////////
-			////////////////////		Render level 			////////////////////
+			////////////////////          Render level          ////////////////////
 			////////////////////////////////////////////////////////////////////////
 
 			this.level.renderLevel = function () {
@@ -174,7 +170,7 @@ Template.tetris.rendered = function () {
 			// End level render
 
 			////////////////////////////////////////////////////////////////////////
-			////////////////////		Render level 			////////////////////
+			////////////////////          Render level          ////////////////////
 			////////////////////////////////////////////////////////////////////////
 
 			this.level.reDrawLevel = function () {
@@ -232,7 +228,7 @@ Template.tetris.rendered = function () {
 			};
 
 			////////////////////////////////////////////////////////////////////////
-			////////////////////	Check for matches	 		////////////////////
+			////////////////////        Check for matches       ////////////////////
 			////////////////////////////////////////////////////////////////////////
 
 			this.level.checkRows = function () {
@@ -252,8 +248,13 @@ Template.tetris.rendered = function () {
 					if ( rowIsFull ) {
 						row.forEach( function (cell, index) { // clear all cells of row
 							row[index] = blank;
+		///////////////////////!!!					////////////// set cell structure to blank here
 						});
-						that.shape.sunkShapes.sort( function (a,b) { return a.y < b.y; }).forEach( function (shape, index) { // move all shapes down
+
+						// move all sunk shapes down
+						that.shape.sunkShapes.sort( function (a,b) { return a.y < b.y; }).forEach( function (shape, index) {
+
+		///////////////////////!!!					/////////////// should only move things above the line down
 							shape.y++;
 						});
 					}
@@ -263,13 +264,9 @@ Template.tetris.rendered = function () {
 
 			};
 
-			this.level.shiftLevelDown = function () {
-
-			};
-
 			////////////////////////////////////////////////////////////////////////
 			////////////////////////////////////////////////////////////////////////
-			// End checking for full rows, shifting level down
+			// End checking for full rows
 
 			////////////////////////////////////////////////////////////////////////
 			////////////////////////////////////////////////////////////////////////
@@ -279,21 +276,19 @@ Template.tetris.rendered = function () {
 
 
 			////////////////////////////////////////////////////////////////////////
-			////////////////////	Construct Shape Properties 	////////////////////
+			////////////////////   Construct Shape Properties   ////////////////////
 			////////////////////////////////////////////////////////////////////////
 
 			this.shape = {
 				shapeTypes: null,
 				currentShape: null,
 				addShape: null,
-				moveDown: null,
 				checkSink: null,
 				sunkShapes: [],
-				rotateShape: null,
 			};
 
 			////////////////////////////////////
-			//	Add shapes		 	   		  //
+			//  Add shapes                    //
 			////////////////////////////////////
 
 			this.shape.addShape = function () {
@@ -302,47 +297,93 @@ Template.tetris.rendered = function () {
 					return Math.floor(Math.random() * (max - min + 1)) + min;
 				};
 
-				var shapeTypes = that.shape.shapeTypes;
+				var shapeTypes = $.extend(true, that.shape.shapeTypes, {});
 
 				var shapeTypeNum = randInt(0, shapeTypes.length - 1);
 
 				var currentShape = shapeTypes[shapeTypeNum];
 
-				currentShape = _.extend(currentShape, {
+				var structure = JSON.parse(JSON.stringify(currentShape.structure)); // clone array (lol)
+				// currentShape.structure = currentShape.structure.map( function (row) {
+				// 	return row.slice(); // clone
+				// });
+
+				newShape = $.extend(true, currentShape, { // deep copy
+
 					x: randInt(0, that.level.horizontal - currentShape.width) + currentShape.firstPointY - 1,
 					y: 0 - currentShape.lastPointY,
 					checkSink: checkSink,
 					sink: sinkShape,
+					rotate: rotateShape,
+					moveLeft: moveLeft,
+					moveRight: moveRight,
+					moveDown: moveDown,
+					structure: structure
 				});
 
-				that.shape.currentShape = currentShape;
+				that.shape.currentShape = newShape;
+			};
+
+
+			////////////////////////////////////
+			//  Rotate shape 90 degrees       //
+			////////////////////////////////////
+
+			var rotateShape = function () {
+
+				var structure = that.shape.currentShape.structure;
+
+				var newStructure = structure.map( function (row) { // clone it
+					return row.slice();
+				});
+
+				structure.forEach( function (row, yIndex) {
+
+					row.forEach( function (cell, xIndex) {
+						newStructure[xIndex][yIndex] = cell; // rotates matrix by swapping the x and the y of each cell
+					});
+				});
+
+				newStructure.map( function (row) {
+					return row.reverse();
+				});
+
+				that.shape.currentShape.structure = newStructure;
+
+				that.level.reDrawLevel();
 			};
 
 			////////////////////////////////////
-			//	Check if shape should be sunk //
+			//  Check if shape should be sunk //
 			////////////////////////////////////
 
 			var checkSink = function () {
 
 				var level = that.level;
 				var levelMap = level.levelMap;
+
+				var currentShape = that.shape.currentShape;
+
 				var levelHeight = level.vertical - 1; // - 1 because it is an array length
-				var lowestY = that.shape.currentShape.lastPointY;
-				var currY = that.shape.currentShape.y;
-				var currX = that.shape.currentShape.x;
-				var shapeWidth = that.shape.currentShape.width;
+				var lowestY = currentShape.lastPointY;
+				var currY = currentShape.y;
+				var currX = currentShape.x;
+
+				var shapeWidth = currentShape.width;
 				var collisionPointY = lowestY + currY;
 
 				var structureY = collisionPointY - currY;
 
-				var filled = that.level.enum.FILLED;
+				var filled = level.enum.FILLED;
+				var blank = level.enum.BLANK;
+				var whitespace = level.enum.WHITESPACE;
 
 				console.log('coordinates:', currX, currY);
 				console.log('level map:');
-				console.log(levelMap[collisionPointY - 2]);
-				console.log(levelMap[collisionPointY - 1]);
-				console.log(levelMap[collisionPointY    ]);
-				console.log(levelMap[collisionPointY + 1]);
+				// console.log(levelMap[collisionPointY - 2]);
+				// console.log(levelMap[collisionPointY - 1]);
+				// console.log(levelMap[collisionPointY    ]);
+				// console.log(levelMap[collisionPointY + 1]);
 
 				// console.log(that.shape.currentShape.structure[structureY]);
 				// console.log(currX - 1, that.shape.currentShape.structure[structureY][shapeWidth - currX]);
@@ -350,22 +391,50 @@ Template.tetris.rendered = function () {
 
 				// is at bottom
 				if ( collisionPointY === levelHeight) {
-					that.shape.currentShape.sink();
-					that.level.checkRows(); // checks each row, then if full then clears it
-				}
-				else {
+					currentShape.sink();
+					level.checkRows(); // checks each row, then if full then clears it
+				} else {
 
-					console.log('structure:');
 
-					that.shape.currentShape.structure.forEach( function (row, shapeX, structure) {
+					console.log('otherLevel:');
 
-						row.forEach( function (cell, shapeY, structureRow) {
-							// ...
-						});
+					// if ( currentShape )
 
+					var levelX,
+						levelY,
+						nextLevelY,
+						nextLevelCell;
+
+					var shouldSink = currentShape.structure.some( function (row, shapeX, structure) {
 						console.log(row);
 
-					}) ;
+						return row.some( function (cell, shapeY, structureRow) {
+
+							if ( cell === filled) {
+								levelY = currY + shapeY;
+								levelX = currX + shapeX;
+								nextLevelY = levelY + 1;
+
+								nextLevelCell = levelMap[nextLevelY][levelX];
+								console.log(nextLevelCell);
+
+								if ( nextLevelCell === filled ) {
+									console.log('collision');
+									return true;
+								}
+							}
+
+						});
+
+					});
+
+					if ( shouldSink ) {
+						// currentShape.sink();
+						level.checkRows();
+					}
+
+					console.log(shouldSink);
+					console.log(that, nextLevelY, levelX);
 
 
 				// 	for ( var x = currX; x < shapeWidth; x++ ) {
@@ -408,14 +477,14 @@ Template.tetris.rendered = function () {
 			//	Shape movement		 	   	  //
 			////////////////////////////////////
 
-			this.shape.moveDown = function () {
+			var moveDown = function () {
 				that.shape.currentShape.y += 1;
 				console.log('current y:', that.shape.currentShape.y);
 
 				that.shape.currentShape.checkSink();
 			};
 
-			this.shape.moveLeft = function () {
+			var moveLeft = function () {
 				// check that moving it to the left won't move it off screen
 				if ( that.shape.currentShape.x - 1 > ( 0 - that.shape.currentShape.firstPointX ) ) {
 					that.shape.currentShape.x -= 1;
@@ -424,7 +493,7 @@ Template.tetris.rendered = function () {
 				}
 			};
 
-			this.shape.moveRight = function () {
+			var moveRight = function () {
 				// check that moving it to the right won't move it off screen
 				if ( that.shape.currentShape.x + 1 < ( that.level.horizontal - that.shape.currentShape.firstPointX ) - 1 ) {
 					that.shape.currentShape.x += 1;
@@ -457,23 +526,23 @@ Template.tetris.rendered = function () {
 						[w,w,w,w,w],	// O O O O O
 					]
 				},
-				// {
-				// 	width: 5,
-				// 	height: 5,
+				{
+					width: 5,
+					height: 5,
 
-				// 	firstPointY: 3,
-				// 	firstPointX: 1,
-				// 	lastPointY: 3,
-				// 	lastPointX: 5,
+					firstPointY: 3,
+					firstPointX: 1,
+					lastPointY: 3,
+					lastPointX: 5,
 
-				// 	structure: [
-				// 		[w,w,w,w,w],	// O O O O O
-				// 		[w,w,w,w,w],	// O O O O O
-				// 		[f,f,f,f,f],	// X X X X X
-				// 		[w,w,w,w,w],	// O O O O O
-				// 		[w,w,w,w,w],	// O O O O O
-				// 	]
-				// },
+					structure: [
+						[w,w,w,w,w],	// O O O O O
+						[w,w,w,w,w],	// O O O O O
+						[f,f,f,f,f],	// X X X X X
+						[w,w,w,w,w],	// O O O O O
+						[w,w,w,w,w],	// O O O O O
+					]
+				},
 				// ...
 			];
 			////////////////////////////////////
@@ -505,15 +574,15 @@ Template.tetris.rendered = function () {
 
 			if ( this.timeSinceMovedDown >= this.settings.gameSpeed ) {
 				this.timeSinceMovedDown = 0;
-				this.shape.moveDown();
+				this.shape.currentShape.moveDown();
 			}
 
 
 			// keypress detection
 
 			if ( this.timeSincePlayerMovedDown > this.settings.downMoveDelay ) {
-				if ( this.keyboard.keys.space || this.keyboard.keys.down ) {
-					that.shape.moveDown();
+				if ( this.keyboard.keys.down ) { // down pressed
+					this.shape.currentShape.moveDown();
 				}
 
 				this.timeSincePlayerMovedDown = 0;
@@ -522,16 +591,15 @@ Template.tetris.rendered = function () {
 			if ( this.timeSincePlayerMovedSide > this.settings.sideMoveDelay ) {
 
 
-				if ( this.keyboard.keys.left ) {
-					that.shape.moveLeft();
+				if ( this.keyboard.keys.left ) { // left pressed
+					that.shape.currentShape.moveLeft();
 				}
-				if ( this.keyboard.keys.right ) {
-					that.shape.moveRight();
+				if ( this.keyboard.keys.right ) { // right pressed
+					that.shape.currentShape.moveRight();
 				}
 
 				this.timeSincePlayerMovedSide = 0;
 			}
-
 
 			this.level.reDrawLevel(); // clears the level, then fills in the level map with shapes
 		},
@@ -548,26 +616,10 @@ Template.tetris.rendered = function () {
 
 		},
 
-		mousedown: function (data) {
-
-			var that = this;
-
-		},
-
-		// keydown: function (event) {
-
-		// 	var that = this;
-
-		// 	if ( event.key === 'space' ) {
-
-		// 	}
-		// 	if ( event.key === 'left' ) {
-		// 		that.shape.moveLeft();
-		// 	}
-
-		// 	if ( event.key === 'right' ) {
-		// 		that.shape.moveRight();
-		// 	}
-		// }
+		keydown: function (data) {
+			if ( data.key === 'space' || data.key === 'up' ) { // space or up
+				this.shape.currentShape.rotate();
+			}
+		}
 	});
 };
