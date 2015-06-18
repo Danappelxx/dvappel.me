@@ -23,10 +23,6 @@ Router.map(function () {
 			};
 		},
 	});
-	this.route('projects', {
-		path: '/projects',
-		template: 'projects'
-	});
 	this.route('about', {
 		path: '/about',
 		template: 'about-page'
@@ -51,8 +47,14 @@ Router.map(function () {
 		}
 	});
 
+	// Projects
+	this.route('projects', {
+		path: '/projects',
+		template: 'projects'
+	});
 
-	// // Codepad
+
+	// Codepad
 	this.route('codepad-base', {
 		path: '/codepad',
 		template: 'codepadBase',
@@ -89,6 +91,12 @@ Router.map(function () {
 	this.route('todolists', {
 		path: '/todolists',
 		template: 'todolists',
+	});
+
+	// Markdown Parser
+	this.route('markdownParser', {
+		path: '/markdownparser',
+		template: 'markdownParser'
 	});
 
 
