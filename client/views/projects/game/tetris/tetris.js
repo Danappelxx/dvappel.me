@@ -322,7 +322,7 @@ Template.tetris.rendered = function () {
 					structure: structure
 				});
 
-				that.shape.currentShape = newShape;
+				that.shape.currentShape = $.extend(true, newShape, {}); // just for safety - another deep clone
 			};
 
 
@@ -352,6 +352,7 @@ Template.tetris.rendered = function () {
 				that.shape.currentShape.structure = newStructure;
 
 				that.level.reDrawLevel();
+
 			};
 
 			////////////////////////////////////
