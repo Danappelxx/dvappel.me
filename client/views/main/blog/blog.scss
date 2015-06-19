@@ -47,3 +47,7 @@
 		margin: 0 auto;
 	}
 }
+
+pre.javascript.hljs span { // all highlighted code
+	white-space: nowrap; // doesn't wrap down to next row
+}
