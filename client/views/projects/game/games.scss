@@ -1,10 +1,6 @@
 #games-container {
 
-	h1 {
-		text-align: center;
-	}
-
-	h2 {
+	h1, h2 {
 		text-align: center;
 	}
 
@@ -15,5 +11,11 @@
 
 	.game-canvas-container {
 		margin-bottom: 5vh;
+
+		.game-container {
+			height: 50%;
+			width: 70%;
+			margin: 0 auto;
+		}
 	}
 }
