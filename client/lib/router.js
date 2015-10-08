@@ -113,4 +113,12 @@ Router.map(function () {
 			this.render(this.params.gameName);
 		}
 	});
+
+
+
+	// History
+	this.route('history', {
+		path: '/history',
+		template: 'history-home'
+	});
 });
