@@ -164,5 +164,12 @@ Meteor.methods({
 				}
 			}
 		);
+	},
+
+
+	loadGithubFeed: function (username) {
+		var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=https://github.com/' + username + '.atom';
+
+		return HTTP.call('GET', url, {});
 	}
 });
